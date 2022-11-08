@@ -6,6 +6,8 @@ import time
 import requests
 from datetime import datetime
 
+// Creation of alerts when price enters a predefined threshold. CSV file is used as source
+
 local_currency = 'USD'
 local_symbol = '$'
 
