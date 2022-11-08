@@ -25,7 +25,7 @@ with open("my_portfolio.csv", "r") as csv_file:
     csv_reader = csv.reader(csv_file)
     for line in csv_reader:
         if '\ufeff' in line[0]:
-            line[0] = line[0][1:].upper()
+            line[0] = line[0][1:].upper() 
         else:
             line[0] = line[0].upper()
 
