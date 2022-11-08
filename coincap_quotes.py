@@ -32,7 +32,7 @@ price = round(price, 2)
 percent_change_24h = round(percent_change_24h, 2)
 market_cap = round(market_cap, 2)
 
-price_string = local_symbol + '{:,}'.format(price)
+price_string = local_symbol + '{:,}'.format(price) 
 percent_change_24h_string = local_symbol + '{:,}'.format(percent_change_24h)
 market_cap_string = local_symbol + '{:,}'.format(market_cap)
 
