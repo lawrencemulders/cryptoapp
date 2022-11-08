@@ -7,6 +7,6 @@ Each file has it's individual purpose. For example, alerttracking enables a user
 Objectives for in the future: 
 (1) Apply ML algorithms towards predicting macro behavior (e.g. crypto winters),  
 (2) Deploying NLP towards idenifying market sentiment, and 
-(3) Building a user-friendly interface which allows these functionalities to be accessed
+(3) Building a user-friendly interface which allows these functionalities to be accessed.
 
 More to follow soon :) 
