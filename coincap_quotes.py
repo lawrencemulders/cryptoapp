@@ -6,7 +6,7 @@ import json
 local_currency = 'USD'
 local_symbol = '$'
 
-api_key = 'e1363bba-253c-4dee-8725-5e7cead90318'
+api_key = 'enter_api_key' // api key removed
 headers = {'X-CMC_PRO_API_KEY': api_key}
 
 base_url = 'https://pro-api.coinmarketcap.com'
