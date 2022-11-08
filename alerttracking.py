@@ -9,7 +9,7 @@ from datetime import datetime
 local_currency = 'USD'
 local_symbol = '$'
 
-api_key = 'e1363bba-253c-4dee-8725-5e7cead90318'
+api_key = 'personalAPIkey' // replaced as each key is personal 
 headers = {'X-CMC_PRO_API_KEY': api_key}
 
 base_url = 'https://pro-api.coinmarketcap.com'
