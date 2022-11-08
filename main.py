@@ -1,5 +1,5 @@
 import requests
-import json
+import json 
 
 local_currency = 'USD'
 local_symbol = '$'
