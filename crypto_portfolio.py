@@ -5,6 +5,8 @@ import requests
 from prettytable import PrettyTable
 from colorama import Fore, Back, Style
 
+// Performance of a portfolio using a csv file as source
+
 local_currency = 'USD'
 local_symbol = '$'
 
