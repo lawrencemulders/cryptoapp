@@ -8,50 +8,52 @@ from datetime import datetime
 
 // Creation of alerts when price enters a predefined threshold. CSV file is used as source
 
-local_currency = 'USD'
-local_symbol = '$'
+def alerttracking () :
 
-api_key = 'enter_api_key' // api key removed
-headers = {'X-CMC_PRO_API_KEY': api_key}
+    local_currency = 'USD'
+    local_symbol = '$'
 
-base_url = 'https://pro-api.coinmarketcap.com'
+    api_key = 'enter_api_key' // api key removed
+    headers = {'X-CMC_PRO_API_KEY': api_key}
 
-print()
-print("ALERTS TRACKING...")
-print()
+    base_url = 'https://pro-api.coinmarketcap.com'
 
-already_hit_symbols = []
+    print()
+    print("ALERTS TRACKING...")
+    print()
 
-while True:
-    with open("my_alerts.csv", "r") as csv_file:
-        csv_reader = csv.reader(csv_file)
-        for line in csv_reader:
-            if '\ufeff' in line[0]:
-                line[0] = line[0][1:].upper()
-            else:
-                line[0] = line[0].upper()
-            symbol = line[0]
-            amount = line[1]
+    already_hit_symbols = []
 
-            quote_url = base_url + '/v1/cryptocurrency/quotes/latest?convert=' + local_currency + '&symbol=' + symbol
+    while True:
+        with open("my_alerts.csv", "r") as csv_file:
+            csv_reader = csv.reader(csv_file)
+            for line in csv_reader:
+                if '\ufeff' in line[0]:
+                    line[0] = line[0][1:].upper()
+                else:
+                    line[0] = line[0].upper()
+                symbol = line[0]
+                amount = line[1]
 
-            request = requests.get(quote_url, headers=headers)
-            results = request.json()
+                quote_url = base_url + '/v1/cryptocurrency/quotes/latest?convert=' + local_currency + '&symbol=' + symbol
 
-            currency = results['data'][symbol]
+                request = requests.get(quote_url, headers=headers)
+                results = request.json()
 
-            name = currency['name']
-            price = currency['quote'][local_currency]['price']
+                currency = results['data'][symbol]
 
-            if float(price) >= float(amount) and symbol not in already_hit_symbols:
-                os.system('say ALERT ALERT ALERT')
-                os.system('say ' + name + ' hit ' + amount)
-                sys.stdout.flush()
+                name = currency['name']
+                price = currency['quote'][local_currency]['price']
 
-                now = datetime.now()
-                current_time = now.strftime("%H:%M")
-                print(name + ' hit ' + amount + ' at ' + current_time + '!')
-                already_hit_symbols.append(symbol)
+                if float(price) >= float(amount) and symbol not in already_hit_symbols:
+                    os.system('say ALERT ALERT ALERT')
+                    os.system('say ' + name + ' hit ' + amount)
+                    sys.stdout.flush()
 
-    print('...')
-    time.sleep(10)
+                    now = datetime.now()
+                    current_time = now.strftime("%H:%M")
+                    print(name + ' hit ' + amount + ' at ' + current_time + '!')
+                    already_hit_symbols.append(symbol)
+
+        print('...')
+        time.sleep(10)
