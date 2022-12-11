@@ -3,6 +3,8 @@ import json
 
 # Retrieve all cryptocurrencies
 
+def cryptolistings():
+
 local_currency = 'USD'
 local_symbol = '$'
 

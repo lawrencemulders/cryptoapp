@@ -6,14 +6,13 @@ import time
 import requests
 from datetime import datetime
 
-// Creation of alerts when price enters a predefined threshold. CSV file is used as source
+# Creation of alerts when price enters a predefined threshold. CSV file is used as source
 
-def alerttracking () :
-
+def alerttracking():
     local_currency = 'USD'
     local_symbol = '$'
 
-    api_key = 'enter_api_key' // api key removed
+    api_key = 'enter_api_key'  # api key removed
     headers = {'X-CMC_PRO_API_KEY': api_key}
 
     base_url = 'https://pro-api.coinmarketcap.com'
