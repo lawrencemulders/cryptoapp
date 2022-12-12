@@ -1,26 +1,44 @@
+from coincap_global import *
+from coincap_listings import *
+from coincap_quotes import *
+from top100 import *
+from crypto_portfolio import *
+from alerttracking import *
 
 print()
-print("My Crypto App")
+print("Welcome to cryptoapp")
 print()
-print("1 - Top 100 sorted by market cap")
-print("2 - Top 100 sorted by market cap")
-print("3 - Top 100 sorted by market cap")
+name = input("What is your name?")
+
+print("Hi " + name + "! ")
+print()
+print("1 - Generic Overview of the Cryptocurrency Market")  # coincap_global
+print("2 - List of all Cryptocurrencies")  # coincap_listings
+print("3 - Search a Specific Cryptocurrency")  # coincap_quotes
+print("4 - Top 100 Cryptocurrency Per Filter")  # top100
+print("5 - Your Portfolio")  # crypto_portfolio
+print("6 - Alert Tracking of Your Cryptocurrencies")  # alerttracking
 print("0 - Exit")
 print()
-
-choice = input("What is your choice(1-3): ")
-
-sort = ""
+choice = input("What is your choice(1-6)? ")
 
 if choice == '1':
-    sort = 'market_cap'
+    cryptoglobal()
 if choice == '2':
-    sort = 'percent_change_24h'
+    cryptolistings()
 if choice == '3':
-    sort = 'volume_24h'
+    cryptoquotes()
+if choice == '4':
+    top100()
+if choice == '5':
+    user_input = input(
+        "Please provide your portfolio as a csv. First column is the ticker and the second should contain the "
+        "quantity per ticker")
+    cryptoportfolio(user_input)
+if choice == '6':
+    user_input = input(
+        "Please provide your portfolio as a csv. First column is the ticker and the second should contain the "
+        "quantity per ticker")
+    alerttracking(user_input)
 if choice == '0':
     exit(0)
-
-- name
-- what is your portfolio
-- make your choice

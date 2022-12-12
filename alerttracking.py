@@ -8,7 +8,8 @@ from datetime import datetime
 
 # Creation of alerts when price enters a predefined threshold. CSV file is used as source
 
-def alerttracking():
+
+def alerttracking(csvfile):
     local_currency = 'USD'
     local_symbol = '$'
 
@@ -24,7 +25,7 @@ def alerttracking():
     already_hit_symbols = []
 
     while True:
-        with open("my_alerts.csv", "r") as csv_file:
+        with open(csvfile, "r") as csv_file:
             csv_reader = csv.reader(csv_file)
             for line in csv_reader:
                 if '\ufeff' in line[0]:

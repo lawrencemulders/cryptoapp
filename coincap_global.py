@@ -3,6 +3,7 @@ import json
 
 # Retrieve a generic overview of the cryptocurrency market
 
+
 def cryptoglobal():
     local_currency = 'USD'
     local_symbol = '$'

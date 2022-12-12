@@ -6,6 +6,7 @@ from colorama import Fore, Back, Style
 
 # Ranking of coins based on filters
 
+
 def top100():
     local_currency = 'USD'
     local_symbol = '$'
@@ -24,7 +25,7 @@ def top100():
     print("0 - Exit")
     print()
 
-    choice = input("What is your choice(1-3): ")
+    choice = input("What is your choice(1-3)? ")
 
     sort = ""
 

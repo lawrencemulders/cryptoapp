@@ -3,6 +3,7 @@ import json
 
 # Retrieve specified cryptocurrencies
 
+
 def cryptoquotes():
     local_currency = 'USD'
     local_symbol = '$'

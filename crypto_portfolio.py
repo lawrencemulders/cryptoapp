@@ -5,9 +5,10 @@ import requests
 from prettytable import PrettyTable
 from colorama import Fore, Back, Style
 
-#Performance of a portfolio using a csv file as source
+# Performance of a portfolio using a csv file as source
 
-def cryptoportfolio():
+
+def cryptoportfolio(csvfile):
     local_currency = 'USD'
     local_symbol = '$'
 
@@ -24,7 +25,7 @@ def cryptoportfolio():
 
     table = PrettyTable(['Asset', 'Amount Owned', 'Value', 'Price', '1h', '24h', '7d'])
 
-    with open("my_portfolio.csv", "r") as csv_file:
+    with open(csvfile, "r") as csv_file:
         csv_reader = csv.reader(csv_file)
         for line in csv_reader:
             if "\ufeff" in line[0]:
