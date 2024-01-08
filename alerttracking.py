@@ -57,3 +57,4 @@ def alerttracking(csvfile):
 
         print('...')
         time.sleep(10)
+
