@@ -1,12 +1,12 @@
 # cryptoapp
 
-This readme is an introduction to a project I am currently building: a cryptocurrency application which allows real time monitoring and predicive capabilities.
+This readme is an introduction to a project currently being build: a notification application which generates a weekly email providing a summary of stock/crypto performances. To keep costs at zero, no database is implemented and a local csv file is used to iterate and monitor progress.
 
-Each file has it's individual purpose. For example, alerttracking enables a user to receive notifications when a price is above (below) a certain threshold. Note: this project is a work-in-progress. As you will observe, classes are not defined yet, however, the API calls have been build including simple feedback. 
+Thus far APIs have been build for crypto. Soon APIs will follow for stocks and the iterative capability to update a local csv file.
 
-Objectives for in the future: 
-(1) Apply ML algorithms towards predicting macro behavior (e.g. crypto winters),  
-(2) Deploying NLP towards idenifying market sentiment, and 
-(3) Building a user-friendly interface which allows these functionalities to be accessed.
+Aspirations for the future:
+(1) Apply NLP models to determine a sentiment scores per stock/crypto
+(2) Creating abn interface which allows the user to provide the path directory of the csv file
+(3) Creating a config file for the user
 
-More to follow soon :) 
+More to follow :)
