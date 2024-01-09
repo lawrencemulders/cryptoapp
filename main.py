@@ -20,7 +20,7 @@ print("3 - Search a Specific Cryptocurrency")  # coincap_quotes
 print("4 - Top 100 Cryptocurrency Per Filter")  # top100
 print("5 - Your Portfolio")  # crypto_portfolio
 print("6 - Alert Tracking of Your Cryptocurrencies")  # alerttracking
-print("7 - Generate a trial email") # emailgenerator
+print("7 - Generate a trial email")  # emailgenerator
 print("0 - Exit")
 print()
 choice = input("What is your choice(1-7)? ")
