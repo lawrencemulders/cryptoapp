@@ -1,8 +1,8 @@
-import json
 import requests
-from datetime import datetime
 from prettytable import PrettyTable
-from colorama import Fore, Back, Style
+from colorama import Back, Style
+from dotenv import dotenv_values
+
 
 # Ranking of coins based on filters
 
@@ -11,7 +11,8 @@ def top100():
     local_currency = 'USD'
     local_symbol = '$'
 
-    api_key = 'enter_api_key' # api key removed
+    config = dotenv_values(".env")
+    api_key = config["APIKEY"]
     headers = {'X-CMC_PRO_API_KEY': api_key}
 
     base_url = 'https://pro-api.coinmarketcap.com'
@@ -20,8 +21,8 @@ def top100():
     print("CoinMarketCap Explorer Menu")
     print()
     print("1 - Top 100 sorted by market cap")
-    print("2 - Top 100 sorted by market cap")
-    print("3 - Top 100 sorted by market cap")
+    print("2 - Top 100 sorted by 24h % change")
+    print("3 - Top 100 sorted by 24h volume")
     print("0 - Exit")
     print()
 
