@@ -4,7 +4,7 @@ from dotenv import dotenv_values
 # Retrieve a generic overview of the cryptocurrency market
 
 
-def cryptoglobal():
+def market_overview_crypto():
     local_currency = 'USD'
     local_symbol = '$'
 

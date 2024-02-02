@@ -10,7 +10,7 @@ from dotenv import dotenv_values
 # Creation of alerts when price enters a predefined threshold. CSV file is used as source
 
 
-def alerttracking(csvfile):
+def alert_tracking_crypto(csvfile):
     local_currency = 'USD'
     local_symbol = '$'
 

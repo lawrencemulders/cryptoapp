@@ -7,7 +7,7 @@ from dotenv import dotenv_values
 # Ranking of coins based on filters
 
 
-def top100():
+def top100_crypto():
     local_currency = 'USD'
     local_symbol = '$'
 

@@ -28,21 +28,21 @@ print()
 choice = input("What is your choice(1-7)? ")
 
 if choice == '1':
-    cryptoglobal()
+    market_overview_crypto()
 if choice == '2':
-    cryptolistings()
+    list_crypto()
 if choice == '3':
-    cryptoquotes()
+    single_search_crypto()
 if choice == '4':
-    top100()
+    top100_crypto()
 if choice == '5':
-    cryptoportfolio(csv_file)
+    portfolio_crypto(csv_file)
 if choice == '6':
     user_input = input(
         "Please provide your portfolio as a csv. First column is the ticker and the second should contain the "
         "quantity per ticker")
-    alerttracking(csv_file)
+    alert_tracking_crypto(csv_file)
 if choice == '7':
-    emailflow()
+    email_flow_crypto()
 if choice == '0':
     exit(0)
