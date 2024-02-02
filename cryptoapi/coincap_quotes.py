@@ -5,7 +5,7 @@ from dotenv import dotenv_values
 # Retrieve specified cryptocurrencies
 
 
-def cryptoquotes():
+def single_search_crypto():
     local_currency = 'USD'
     local_symbol = '$'
 

@@ -4,7 +4,7 @@ from dotenv import dotenv_values
 # Retrieve all cryptocurrencies
 
 
-def cryptolistings():
+def list_crypto():
     local_currency = 'USD'
     local_symbol = '$'
 

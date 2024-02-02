@@ -8,7 +8,7 @@ from dotenv import dotenv_values
 # Performance of a portfolio using a csv file as source
 
 
-def cryptoportfolio(csvfileinput):
+def portfolio_crypto(csvfileinput):
     local_currency = 'USD'
     local_symbol = '$'
 
@@ -72,19 +72,19 @@ def cryptoportfolio(csvfileinput):
             portfolio_value += value
 
             if hour_change > 0:
-                hour_change = Back.GREEN + str(hour_change) + '%' + Style.RESET_ALL
+                hour_change = str(hour_change) + '%'
             else:
-                hour_change = Back.RED + str(hour_change) + '%' + Style.RESET_ALL
+                hour_change = str(hour_change) + '%'
 
             if day_change > 0:
-                day_change = Back.GREEN + str(day_change) + '%' + Style.RESET_ALL
+                day_change = str(day_change) + '%'
             else:
-                day_change = Back.RED + str(day_change) + '%' + Style.RESET_ALL
+                day_change = str(day_change) + '%'
 
             if week_change > 0:
-                week_change = Back.GREEN + str(week_change) + '%' + Style.RESET_ALL
+                week_change = str(week_change) + '%'
             else:
-                week_change = Back.RED + str(week_change) + '%' + Style.RESET_ALL
+                week_change = str(week_change) + '%'
 
             price_string = '{:,}'.format(round(price, 2))
             value_string = '{:,}'.format(round(value, 2))

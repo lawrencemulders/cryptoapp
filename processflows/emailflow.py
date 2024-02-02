@@ -3,7 +3,7 @@ from cryptoapi.crypto_portfolio import *
 from dotenv import dotenv_values
 
 
-def emailflow():
+def email_flow_crypto():
 
     config = dotenv_values(".env")
     csvfile = config["CSVFILE"]
@@ -41,7 +41,7 @@ def emailflow():
     send_email(cryptoapi_results)
 
 
-def scheduledemailflow():
+def schedule_email_flow_crypto():
 
     config = dotenv_values(".env")
     csvfile = config["CSVFILE"]
