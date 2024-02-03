@@ -11,10 +11,10 @@ Upcoming iterations:
 
 To enable the program on your local machine, create a local .env file containing input for the following:
 
-CSVFILE=
-RECIPIENTEMAIL=
-SMTPUSERNAME=
-SMTPPASSWORD=
-APIKEY=
+*CSVFILE=
+*RECIPIENTEMAIL=
+*SMTPUSERNAME=
+*SMTPPASSWORD=
+*APIKEY=
 
 Note: CSVFILE must contain a file of csv format e.g. Crypto.csv where no headers are present and column 1 contains the ticker and column 2 the amount of stock. The csv file must be stored within the project.
