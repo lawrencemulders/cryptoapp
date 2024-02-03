@@ -10,6 +10,7 @@ Upcoming iterations:
 (3) Create configuration for the user to select interested metrics
 
 To enable the program on your local machine, create a local .env file containing input for the following:
+
 CSVFILE=
 RECIPIENTEMAIL=
 SMTPUSERNAME=
