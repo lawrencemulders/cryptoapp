@@ -4,6 +4,7 @@ from cryptoapi.coincap_quotes import *
 from cryptoapi.top100 import *
 from cryptoapi.alerttracking import *
 from processflows.emailflow import *
+from metrics.sentiment_analysis import *
 
 config = dotenv_values(".env")
 csv_file = config["CSVFILE"]

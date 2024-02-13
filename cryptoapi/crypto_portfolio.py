@@ -1,8 +1,8 @@
 import csv
 import requests
-from prettytable import PrettyTable
-from colorama import Back, Style
 from dotenv import dotenv_values
+from prettytable import PrettyTable
+from processflows.metric_composer import *
 
 
 # Performance of a portfolio using a csv file as source
@@ -10,7 +10,6 @@ from dotenv import dotenv_values
 
 def portfolio_crypto(csvfileinput):
     local_currency = 'USD'
-    local_symbol = '$'
 
     config = dotenv_values(".env")
     api_key = config["APIKEY"]
@@ -23,9 +22,7 @@ def portfolio_crypto(csvfileinput):
     print("My Portfolio")
     print()
 
-    portfolio_value = 0.00
-
-    table = PrettyTable(['Asset', 'Amount Owned', 'Value', 'Price', '1h', '24h', '7d'])
+    table = PrettyTable(['Asset', 'Amount Owned', 'Value', 'Price', '1h', '24h', '7d', 'Sentiment'])
 
     with open(csvfileinput, "r", encoding='utf-8') as csv_file:
         csv_reader = csv.reader(csv_file)
@@ -50,53 +47,9 @@ def portfolio_crypto(csvfileinput):
             request = requests.get(quote_url, headers=headers)
             results = request.json()
 
+            table = metric_composer(table, results, symbol, amount)
+
             # print(json.dumps(results, sort_keys=True, indent=4))
-
-            try:
-                currency = results['data'][symbol]
-            except KeyError:
-                continue
-
-            name = currency['name']
-
-            quote = currency['quote'][local_currency]
-
-            hour_change = round(quote['percent_change_1h'], 1)
-            day_change = round(quote['percent_change_24h'], 1)
-            week_change = round(quote['percent_change_7d'], 1)
-
-            price = quote['price']
-
-            value = float(price) * float(amount)
-
-            portfolio_value += value
-
-            if hour_change > 0:
-                hour_change = str(hour_change) + '%'
-            else:
-                hour_change = str(hour_change) + '%'
-
-            if day_change > 0:
-                day_change = str(day_change) + '%'
-            else:
-                day_change = str(day_change) + '%'
-
-            if week_change > 0:
-                week_change = str(week_change) + '%'
-            else:
-                week_change = str(week_change) + '%'
-
-            price_string = '{:,}'.format(round(price, 2))
-            value_string = '{:,}'.format(round(value, 2))
-
-            table.add_row([name + ' (' + symbol + ')',
-                           amount,
-                           local_symbol + value_string,
-                           local_symbol + price_string,
-                           str(hour_change),
-                           str(day_change),
-                           str(week_change)])
-            print(f"Added new row to table: {table}")
     return table
 
 def has_at_least_two_non_empty_columns(row, delimiter=';'):

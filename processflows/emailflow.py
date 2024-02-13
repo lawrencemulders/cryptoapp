@@ -1,5 +1,6 @@
 from communication.emailgenerator import *
 from cryptoapi.crypto_portfolio import *
+from processflows.metric_composer import *
 from dotenv import dotenv_values
 
 
@@ -23,7 +24,7 @@ def email_flow_crypto():
 #  TODO: define api implementation for stocks and assess retrieved data
 #  TODO: establish mapping between api results and local variables
 
-    cryptoapi_results = cryptoportfolio(csvfile)
+    cryptoapi_results = portfolio_crypto(csvfile)
 
     print("Generated portfolio metrics")
 
@@ -61,7 +62,7 @@ def schedule_email_flow_crypto():
 #  TODO: define api implementation for stocks and assess retrieved data
 #  TODO: establish mapping between api results and local variables
 
-        cryptoapi_results = cryptoportfolio(csvfile)
+        cryptoapi_results = portfolio_crypto(csvfile)
 
 #  3a) Perform necessary calculations
 #  TODO: Define metrics
