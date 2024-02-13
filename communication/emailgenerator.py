@@ -3,7 +3,6 @@ import time
 import schedule
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from datetime import datetime, timedelta
 from dotenv import dotenv_values
 
 config = dotenv_values(".env")
@@ -19,8 +18,8 @@ smtp_password = config["SMTPPASSWORD"]
 sender_email = config["SMTPUSERNAME"]
 recipient_email = config["RECIPIENTEMAIL"]
 
+
 def send_email(tableinput):
-    #TODO: Account for green/red colours in movements
 
     # Create a message object
     message = MIMEMultipart()
@@ -73,6 +72,7 @@ def send_email(tableinput):
         print('Email sent successfully!')
     except Exception as e:
         print(f'Error sending email: {e}')
+
 
 def send_scheduled_email(tableinput):
 

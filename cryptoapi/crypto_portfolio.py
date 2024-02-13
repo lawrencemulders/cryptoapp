@@ -1,5 +1,6 @@
 import csv
 import requests
+import threading
 from dotenv import dotenv_values
 from prettytable import PrettyTable
 from processflows.metric_composer import *
@@ -7,8 +8,8 @@ from processflows.metric_composer import *
 
 # Performance of a portfolio using a csv file as source
 
-
 def portfolio_crypto(csvfileinput):
+
     local_currency = 'USD'
 
     config = dotenv_values(".env")
@@ -26,33 +27,45 @@ def portfolio_crypto(csvfileinput):
 
     with open(csvfileinput, "r", encoding='utf-8') as csv_file:
         csv_reader = csv.reader(csv_file)
-        print(csv_reader)
+        threads = []
+
         for line in csv_reader:
-            if has_at_least_two_non_empty_columns(line):  # Check if the line has at least 2 elements
-                seperate_columns = line[0].split(';')
-                if "\ufeff" in seperate_columns[0]:
-                    seperate_columns[0] = seperate_columns[0][1:].upper()
-                else:
-                    seperate_columns[0] = seperate_columns[0].upper()
+            thread = threading.Thread(target=process_line, args=(line, base_url, local_currency, headers, table))
+            thread.start()
+            threads.append(thread)
 
-                symbol = seperate_columns[0]
-                amount = seperate_columns[1]
-                print(f"Successfully read column 1 and column 2 {symbol, amount}")
-            else:
-                print(f"Failed to read column 1 and 2")
-                continue
+        for thread in threads:
+            thread.join()
 
-            quote_url = base_url + '/v1/cryptocurrency/quotes/latest?convert=' + local_currency + '&symbol=' + symbol
+    return table
 
-            request = requests.get(quote_url, headers=headers)
-            results = request.json()
 
-            table = metric_composer(table, results, symbol, amount)
+def process_line(line, base_url, local_currency, headers, table):
 
-            # print(json.dumps(results, sort_keys=True, indent=4))
+    if has_at_least_two_non_empty_columns(line):
+        separate_columns = line[0].split(';')
+        if "\ufeff" in separate_columns[0]:
+            separate_columns[0] = separate_columns[0][1:].upper()
+        else:
+            separate_columns[0] = separate_columns[0].upper()
+
+        symbol = separate_columns[0]
+        amount = separate_columns[1]
+        print(f"Successfully read column 1 and column 2 {symbol, amount}")
+
+        quote_url = base_url + '/v1/cryptocurrency/quotes/latest?convert=' + local_currency + '&symbol=' + symbol
+
+        request = requests.get(quote_url, headers=headers)
+        results = request.json()
+
+        table = metric_composer(table, results, symbol, amount)
+    else:
+        print(f"Failed to read column 1 and 2")
+
     return table
 
 def has_at_least_two_non_empty_columns(row, delimiter=';'):
+
     # Access the string in the list and split it into columns using the specified delimiter
     columns = row[0].split(delimiter)
     return len(columns) >= 2 and all(col.strip() != '' for col in columns)

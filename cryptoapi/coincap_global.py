@@ -5,6 +5,7 @@ from dotenv import dotenv_values
 
 
 def market_overview_crypto():
+
     local_currency = 'USD'
     local_symbol = '$'
 

@@ -1,7 +1,6 @@
 import os
 import csv
 import sys
-import json
 import time
 import requests
 from datetime import datetime
@@ -11,6 +10,7 @@ from dotenv import dotenv_values
 
 
 def alert_tracking_crypto(csvfile):
+
     local_currency = 'USD'
     local_symbol = '$'
 

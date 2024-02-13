@@ -26,7 +26,7 @@ def metric_composer(table, results, symbol, amount):
         # Iterate through the table to find the row with the specified symbol
         for row_index in range(len(table.rows)):
             if symbol in table.rows[row_index][0].upper():
-                table._rows[row_index][sentiment_column_index] = sentiment_result
+                table.rows[row_index][sentiment_column_index] = sentiment_result
                 break  # Stop iteration after the first match
 
     print(table)
