@@ -7,6 +7,7 @@ Thus far an API has been build for crypto which feeds the scheduled email provid
 Several features include:
 (1) Threading to improve performance for I/O bound operations when making HTTP requests
 (2) Apply NLP models to determine a sentiment score per crypto
+(3) Performing API calls for specific use cases (see main.py)
 
 Upcoming iterations:
 (1) Introduce a stock API
