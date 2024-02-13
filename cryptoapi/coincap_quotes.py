@@ -6,6 +6,7 @@ from dotenv import dotenv_values
 
 
 def single_search_crypto():
+
     local_currency = 'USD'
     local_symbol = '$'
 

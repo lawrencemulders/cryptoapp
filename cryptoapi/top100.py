@@ -8,6 +8,7 @@ from dotenv import dotenv_values
 
 
 def top100_crypto():
+
     local_currency = 'USD'
     local_symbol = '$'
 

@@ -12,7 +12,7 @@ def determine_sentiment(symbol):
 
     # Step 1: Extract data based on symbol
 
-    num_pages = 5
+    num_pages = 3
     now = date.today()
     yesterday = date.today() - timedelta(days=1)
     google_news = GoogleNews(start=yesterday, end=now)
@@ -49,7 +49,6 @@ def determine_sentiment(symbol):
         article_dict['Key_words'] = article_obj.keywords
         article_list.append(article_dict)
 
-    # Create DataFrame after the loop
     news_df = DataFrame(article_list)
     print(news_df)
 
@@ -83,10 +82,10 @@ def determine_sentiment(symbol):
 
         positive_percentage = (positive / len(news_df)) * 100
 
-        print("Positive Sentiment:", '%.2f' % positive_percentage, end='\n')
+        print("Sentiment:", '%.2f' % positive_percentage, end='\n')
 
     except KeyError:
         print(f"Failed to access Summary column in news_df: {KeyError}")
-        positive_percentage = 0.5
+        positive_percentage = 50.0 # set to neutral
 
     return positive_percentage
