@@ -20,6 +20,7 @@ To enable the program on your local machine, create a local .env file containing
 * SMTPUSERNAME=
 * SMTPPASSWORD=
 * APIKEY=
+
 Note: APIKEY can be obtained when creating a free dev account at https://pro-api.coinmarketcap.com
 
 Note: CSVFILE must contain a file of csv format e.g. Crypto.csv where no headers are present and column 1 contains the ticker and column 2 the amount of stock. The csv file must be stored within the project.
