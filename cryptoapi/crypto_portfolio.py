@@ -19,10 +19,6 @@ def portfolio_crypto(csvfileinput):
 
     base_url = 'https://pro-api.coinmarketcap.com'
 
-    print()
-    print("My Portfolio")
-    print()
-
     table = PrettyTable(['Asset', 'Amount Owned', 'Value', 'Price', '1h', '24h', '7d', 'Sentiment'])
 
     with open(csvfileinput, "r", encoding='utf-8') as csv_file:
