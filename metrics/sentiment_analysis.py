@@ -23,7 +23,6 @@ def determine_sentiment(symbol):
 
     result = google_news.result()
     df = DataFrame(result)
-    print(df)
 
     # Step 2: Summarize found articles
 
@@ -50,7 +49,6 @@ def determine_sentiment(symbol):
         article_list.append(article_dict)
 
     news_df = DataFrame(article_list)
-    print(news_df)
 
     # Step 3: Sentiment analysis
 
