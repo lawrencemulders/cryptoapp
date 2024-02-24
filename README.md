@@ -15,20 +15,22 @@ Upcoming iterations:
 (3) Review Hugging Face for further metrics
 (4) Enable local tasks
 
+# Env File
+
 To enable the program on your local machine, create a local .env file containing input for the following:
 
-# General Config
+General Config
 - CSVFILE=
 - RECIPIENTEMAIL=
 - SMTPUSERNAME=
 - SMTPPASSWORD=
 - APIKEY=
 
-# Metric Config
+Metric Config
 - PERCENTAGECHANGETIME=true
 - SENTIMENTANALYSIS=true
 
-# Notification Schedule Config
+Notification Schedule Config
 - SCHEDULE_DAY=sunday
 - SCHEDULE_TIME=12:00
 
