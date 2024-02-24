@@ -1,33 +1,39 @@
 from metrics.percentage_change_time import *
 from metrics.sentiment_analysis import *
-
+from dotenv import dotenv_values
 
 def metric_composer(table, results, symbol, amount):
 
-    table = percentage_change_time(table, results, symbol, amount)
+    config = dotenv_values(".env")
+    use_percentage_change_time = config["PERCENTAGECHANGETIME"]
+    use_sentiment_analysis = config["SENTIMENTANALYSIS"]
 
-    # Find the index of the "Sentiment" column
-    sentiment_column_name = "Sentiment"
-    sentiment_column_index = None
+    if use_percentage_change_time:
+        table = percentage_change_time(table, results, symbol, amount)
 
-    # Assuming the first row contains column headers
-    headers = table.field_names
+    if use_sentiment_analysis:
+        # Find the index of the "Sentiment" column
+        sentiment_column_name = "Sentiment"
+        sentiment_column_index = None
 
-    for i, header in enumerate(headers):
-        if header == sentiment_column_name:
-            sentiment_column_index = i
-            break
+        # Assuming the first row contains column headers
+        headers = table.field_names
 
-    if sentiment_column_index is None:
-        print("Error: Column '{}' not found in the table.".format(sentiment_column_name))
-    else:
-        sentiment_result = determine_sentiment(symbol)
+        for i, header in enumerate(headers):
+            if header == sentiment_column_name:
+                sentiment_column_index = i
+                break
 
-        # Iterate through the table to find the row with the specified symbol
-        for row_index in range(len(table.rows)):
-            if symbol in table.rows[row_index][0].upper():
-                table.rows[row_index][sentiment_column_index] = sentiment_result
-                break  # Stop iteration after the first match
+        if sentiment_column_index is None:
+            print("Error: Column '{}' not found in the table.".format(sentiment_column_name))
+        else:
+            sentiment_result = determine_sentiment(symbol)
 
-    print(table)
+            # Iterate through the table to find the row with the specified symbol
+            for row_index in range(len(table.rows)):
+                if symbol in table.rows[row_index][0].upper():
+                    table.rows[row_index][sentiment_column_index] = sentiment_result
+                    break  # Stop iteration after the first match
+
+        print(table)
     return table
