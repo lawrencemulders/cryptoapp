@@ -76,6 +76,9 @@ def send_email(tableinput):
 
 def send_scheduled_email(tableinput):
 
+    schedule_time = config.get("SCHEDULE_TIME")
+    schedule_day = config.get("SCHEDULE_DAY")
+
     # Create a message object
     message = MIMEMultipart()
     message['From'] = sender_email
@@ -125,9 +128,11 @@ def send_scheduled_email(tableinput):
             server.sendmail(sender_email, recipient_email, message.as_string())
 
         print('Email sent successfully!')
-        schedule.every().sunday.at('12:00').do(send_scheduled_email)
-        while True:
-            schedule.run_pending()
-            time.sleep(1)
     except Exception as e:
         print(f'Error sending email: {e}')
+
+    getattr(schedule.every(), schedule_day).at(schedule_time).do(send_scheduled_email)
+
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
