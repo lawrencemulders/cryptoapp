@@ -16,11 +16,21 @@ Upcoming iterations:
 (4) Enable local tasks
 
 To enable the program on your local machine, create a local .env file containing input for the following:
-* CSVFILE=
-* RECIPIENTEMAIL=
-* SMTPUSERNAME=
-* SMTPPASSWORD=
-* APIKEY=
+
+# General Config
+- CSVFILE=
+- RECIPIENTEMAIL=
+- SMTPUSERNAME=
+- SMTPPASSWORD=
+- APIKEY=
+
+# Metric Config
+- PERCENTAGECHANGETIME=true
+- SENTIMENTANALYSIS=true
+
+# Notification Schedule Config
+- SCHEDULE_DAY=sunday
+- SCHEDULE_TIME=12:00
 
 Note: APIKEY can be obtained when creating a free dev account at https://pro-api.coinmarketcap.com
 
