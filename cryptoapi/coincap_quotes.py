@@ -11,7 +11,7 @@ def single_search_crypto():
     local_symbol = '$'
 
     config = dotenv_values(".env")
-    api_key = config["APIKEY"]
+    api_key = config["APIKEYCRYPTO"]
     headers = {'X-CMC_PRO_API_KEY': api_key}
 
     base_url = 'https://pro-api.coinmarketcap.com'

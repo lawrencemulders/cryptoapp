@@ -10,7 +10,7 @@ def market_overview_crypto():
     local_symbol = '$'
 
     config = dotenv_values(".env")
-    api_key = config["APIKEY"]
+    api_key = config["APIKEYCRYPTO"]
     headers = {'X-CMC_PRO_API_KEY': api_key}
 
     base_url = 'https://pro-api.coinmarketcap.com'
@@ -39,7 +39,8 @@ def market_overview_crypto():
 
     print()
     print(
-        'The global market cap for all cryptocurrencies is ' + total_market_cap_string + ' and the global 24h volume is ' + total_volume_24h_string + '.')
+        'The global market cap for all cryptocurrencies is ' + total_market_cap_string +
+        ' and the global 24h volume is ' + total_volume_24h_string + '.')
     print()
     print('Bitcoin makes up ' + str(btc_dominance) + '% of the global market cap and Ethereum makes up ' + str(
         eth_dominance) + '%.')

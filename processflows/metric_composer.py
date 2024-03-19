@@ -2,14 +2,15 @@ from metrics.percentage_change_time import *
 from metrics.sentiment_analysis import *
 from dotenv import dotenv_values
 
-def metric_composer(table, results, symbol, amount):
+
+def metric_composer(table, results, symbol, amount, is_crypto):
 
     config = dotenv_values(".env")
     use_percentage_change_time = config["PERCENTAGECHANGETIME"]
     use_sentiment_analysis = config["SENTIMENTANALYSIS"]
 
     if use_percentage_change_time:
-        table = percentage_change_time(table, results, symbol, amount)
+        table = percentage_change_time(table, results, symbol, amount, is_crypto)
 
     if use_sentiment_analysis:
         # Find the index of the "Sentiment" column
