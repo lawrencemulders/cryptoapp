@@ -10,10 +10,10 @@ Several features include:
 (3) Performing API calls for specific use cases (see main.py)
 
 Upcoming iterations:
-(1) Introduce a stock API
-(2) Create configuration for the user to select interested metrics
-(3) Review Hugging Face for further metrics
-(4) Enable local tasks
+(1) Review Hugging Face for further metrics
+(2) Enable local tasks
+(3) Expand stock API use cases
+(4) Allow for modifying the excel to keep track of historical progress
 
 # Env File
 
@@ -24,7 +24,8 @@ General Config
 - RECIPIENTEMAIL=
 - SMTPUSERNAME=
 - SMTPPASSWORD=
-- APIKEY=
+- APIKEYCRYPTO=
+- APIKEYSTOCK=
 
 Metric Config
 - PERCENTAGECHANGETIME=true
@@ -34,6 +35,8 @@ Notification Schedule Config
 - SCHEDULE_DAY=sunday
 - SCHEDULE_TIME=12:00
 
-Note: APIKEY can be obtained when creating a free dev account at https://pro-api.coinmarketcap.com
+Note: APIKEYCRYPTO / APIKEYSTOCK can be obtained when creating a free dev account at https://pro-api.coinmarketcap.com / https://www.alphavantage.co/
+- Coin market cap has a free tier which limits to 10,000 API calls
+- Alpha Vantage has a free tier which limits to 25 API calls
 
-Note: CSVFILE must contain a file of csv format e.g. Crypto.csv where no headers are present and column 1 contains the ticker and column 2 the amount of stock. The csv file must be stored within the project.
+Note: CSVFILE must contain a file of csv format e.g. Crypto.csv where no headers are present and column 1 contains the ticker column 2 the quanityt of each asset, and column 3 must contain either 0 (stock) or 1 (crypto). The csv file must be stored within the project.
