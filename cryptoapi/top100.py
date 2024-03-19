@@ -3,17 +3,17 @@ from prettytable import PrettyTable
 from colorama import Back, Style
 from dotenv import dotenv_values
 
-
 # Ranking of coins based on filters
 
 
 def top100_crypto():
 
+    global market_cap_string, volume_string
     local_currency = 'USD'
     local_symbol = '$'
 
     config = dotenv_values(".env")
-    api_key = config["APIKEY"]
+    api_key = config["APIKEYCRYPTO"]
     headers = {'X-CMC_PRO_API_KEY': api_key}
 
     base_url = 'https://pro-api.coinmarketcap.com'
@@ -92,13 +92,8 @@ def top100_crypto():
 
         price_string = '{:,}'.format(round(price, 2))
 
-        table.add_row([name + ' (' + symbol + ')',
-                        local_symbol + price_string,
-                        local_symbol + market_cap_string,
-                        local_symbol + volume_string,
-                        str(hour_change),
-                        str(day_change),
-                        str(week_change)])
+        table.add_row([name + ' (' + symbol + ')', local_symbol + price_string, local_symbol + market_cap_string,
+                       local_symbol + volume_string, str(hour_change), str(day_change), str(week_change)])
 
     print()
     print(table)

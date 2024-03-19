@@ -10,12 +10,10 @@ from dotenv import dotenv_values
 
 
 def alert_tracking_crypto(csvfile):
-
     local_currency = 'USD'
-    local_symbol = '$'
 
     config = dotenv_values(".env")
-    api_key = config["APIKEY"]
+    api_key = config["APIKEYCRYPTO"]
     headers = {'X-CMC_PRO_API_KEY': api_key}
 
     base_url = 'https://pro-api.coinmarketcap.com'
@@ -37,7 +35,8 @@ def alert_tracking_crypto(csvfile):
                 symbol = line[0]
                 amount = line[1]
 
-                quote_url = base_url + '/v1/cryptocurrency/quotes/latest?convert=' + local_currency + '&symbol=' + symbol
+                quote_url = (base_url + '/v1/cryptocurrency/quotes/latest?convert=' +
+                             local_currency + '&symbol=' + symbol)
 
                 request = requests.get(quote_url, headers=headers)
                 results = request.json()
@@ -59,4 +58,3 @@ def alert_tracking_crypto(csvfile):
 
         print('...')
         time.sleep(10)
-

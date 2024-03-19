@@ -28,7 +28,7 @@ print()
 choice = input("What is your choice (1-6)? ")
 
 if choice == '1':
-    email_flow_crypto()
+    trial_email_flow()
 if choice == '2':
     market_overview_crypto()
 if choice == '3':

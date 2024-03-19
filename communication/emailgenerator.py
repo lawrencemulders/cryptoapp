@@ -19,7 +19,7 @@ sender_email = config["SMTPUSERNAME"]
 recipient_email = config["RECIPIENTEMAIL"]
 
 
-def send_email(tableinput):
+def send_email(merged_table):
 
     # Create a message object
     message = MIMEMultipart()
@@ -27,7 +27,7 @@ def send_email(tableinput):
     message['To'] = recipient_email
     message['Subject'] = 'CryptoApp: Movement Update'
 
-    html_table = tableinput.get_html_string(attributes={"border": "1"})
+    html_table = merged_table.get_html_string(attributes={"border": "1"})
     html_content = f"""
     <html>
     <head>
@@ -74,7 +74,7 @@ def send_email(tableinput):
         print(f'Error sending email: {e}')
 
 
-def send_scheduled_email(tableinput):
+def send_scheduled_email(merged_table):
 
     schedule_time = config.get("SCHEDULE_TIME")
     schedule_day = config.get("SCHEDULE_DAY")
@@ -85,7 +85,7 @@ def send_scheduled_email(tableinput):
     message['To'] = recipient_email
     message['Subject'] = 'CryptoApp: Movement Update'
 
-    html_table = tableinput.get_html_string(attributes={"border": "1"})
+    html_table = merged_table.get_html_string(attributes={"border": "1"})
     html_content = f"""
     <html>
     <head>

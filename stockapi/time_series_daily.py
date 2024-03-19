@@ -3,25 +3,21 @@ import requests
 import threading
 from processflows.metric_composer import *
 
-# Performance of a portfolio using a csv file as source
+# Daily performance of stocks
 
 
-def portfolio_crypto(csvfileinput, table):
+def time_series_daily_stock(csvfileinput, table):
 
-    local_currency = 'USD'
+    api_key = dotenv_values(".env")["APIKEYSTOCK"]
 
-    api_key = dotenv_values(".env")["APIKEYCRYPTO"]
-
-    headers = {'X-CMC_PRO_API_KEY': api_key}
-
-    base_url = 'https://pro-api.coinmarketcap.com'
+    base_url = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY'
 
     with open(csvfileinput, "r", encoding='utf-8') as csv_file:
         csv_reader = csv.reader(csv_file)
         threads = []
 
         for line in csv_reader:
-            thread = threading.Thread(target=process_line, args=(line, base_url, local_currency, headers, table))
+            thread = threading.Thread(target=process_line, args=(line, base_url, api_key, table))
             thread.start()
             threads.append(thread)
 
@@ -31,7 +27,7 @@ def portfolio_crypto(csvfileinput, table):
     return table
 
 
-def process_line(line, base_url, local_currency, headers, table):
+def process_line(line, base_url, api_key, table):
 
     if has_at_least_two_non_empty_columns(line):
         separate_columns = line[0].split(';')
@@ -48,20 +44,22 @@ def process_line(line, base_url, local_currency, headers, table):
         else:
             is_crypto = False
 
-        if not is_crypto:
-            print("Skipping stock asset processing")
+        if is_crypto:
+            print("Skipping crypto asset processing")
             return table  # Skip processing and return the original table
 
-        print(f"Successfully read column 1, column 2 and column 3 {symbol, amount, is_crypto}")
+        print(f"Successfully read column 1, column 2, and column 3: {symbol}, {amount}, {is_crypto}")
 
-        quote_url = base_url + '/v1/cryptocurrency/quotes/latest?convert=' + local_currency + '&symbol=' + symbol
+        quote_url = base_url + '&symbol=' + symbol + '&outputsize=compact&apikey=' + api_key
 
-        request = requests.get(quote_url, headers=headers)
+        request = requests.get(quote_url)
         results = request.json()
+
+        print(results)
 
         table = metric_composer(table, results, symbol, amount, is_crypto)
     else:
-        print(f"Failed to read column 1 and 2")
+        print("Failed to read column 1 and 2")
 
     return table
 

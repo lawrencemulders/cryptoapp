@@ -84,6 +84,6 @@ def determine_sentiment(symbol):
 
     except KeyError:
         print(f"Failed to access Summary column in news_df: {KeyError}")
-        positive_percentage = 50.0 # set to neutral
+        positive_percentage = 50.0  # set to neutral
 
     return positive_percentage
