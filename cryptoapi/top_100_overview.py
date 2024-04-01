@@ -3,7 +3,7 @@ from prettytable import PrettyTable
 from colorama import Back, Style
 from dotenv import dotenv_values
 
-# Ranking of coins based on filters
+# Generate top 100 overview based on selected ranking.
 
 
 def top100_crypto():
@@ -12,10 +12,8 @@ def top100_crypto():
     local_currency = 'USD'
     local_symbol = '$'
 
-    config = dotenv_values(".env")
-    api_key = config["APIKEYCRYPTO"]
+    api_key = dotenv_values(".env")["APIKEYCRYPTO"]
     headers = {'X-CMC_PRO_API_KEY': api_key}
-
     base_url = 'https://pro-api.coinmarketcap.com'
 
     print()
@@ -44,8 +42,6 @@ def top100_crypto():
 
     request = requests.get(quote_url, headers=headers)
     results = request.json()
-
-# print(json.dumps(results, sort_keys=True, indent=4))
 
     data = results["data"]
 

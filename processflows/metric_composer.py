@@ -1,16 +1,15 @@
-from metrics.percentage_change_time import *
+from metrics.price_change_time import *
 from metrics.sentiment_analysis import *
 from dotenv import dotenv_values
 
 
 def metric_composer(table, results, symbol, amount, is_crypto):
 
-    config = dotenv_values(".env")
-    use_percentage_change_time = config["PERCENTAGECHANGETIME"]
-    use_sentiment_analysis = config["SENTIMENTANALYSIS"]
+    use_percentage_change_time = dotenv_values(".env")["PERCENTAGECHANGETIME"]
+    use_sentiment_analysis = dotenv_values(".env")["SENTIMENTANALYSIS"]
 
     if use_percentage_change_time:
-        table = percentage_change_time(table, results, symbol, amount, is_crypto)
+        table = price_change_time(table, results, symbol, amount, is_crypto)
 
     if use_sentiment_analysis:
         # Find the index of the "Sentiment" column
@@ -34,7 +33,9 @@ def metric_composer(table, results, symbol, amount, is_crypto):
             for row_index in range(len(table.rows)):
                 if symbol in table.rows[row_index][0].upper():
                     table.rows[row_index][sentiment_column_index] = sentiment_result
-                    break  # Stop iteration after the first match
+                    print(f"Added sentiment score for symbol {symbol}: {sentiment_result}")
+                    break  # Stop iteration after first match
 
-        print(table)
+    print(f"Composed all metrics for {symbol}")
+
     return table

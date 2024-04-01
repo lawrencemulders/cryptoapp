@@ -7,12 +7,14 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 nltk.downloader.download('vader_lexicon')
 nltk.download('punkt')
 
+# Determine market sentiment using Google API webscraper.
+
 
 def determine_sentiment(symbol):
 
     # Step 1: Extract data based on symbol
 
-    num_pages = 3
+    num_pages = 1
     now = date.today()
     yesterday = date.today() - timedelta(days=1)
     google_news = GoogleNews(start=yesterday, end=now)

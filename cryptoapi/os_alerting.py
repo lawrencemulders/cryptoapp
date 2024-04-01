@@ -6,16 +6,14 @@ import requests
 from datetime import datetime
 from dotenv import dotenv_values
 
-# Creation of alerts when price enters a predefined threshold. CSV file is used as source
+# Trigger alerts when price enters a predefined threshold. CSV file is used as source.
 
 
 def alert_tracking_crypto(csvfile):
     local_currency = 'USD'
 
-    config = dotenv_values(".env")
-    api_key = config["APIKEYCRYPTO"]
+    api_key = dotenv_values(".env")["APIKEYCRYPTO"]
     headers = {'X-CMC_PRO_API_KEY': api_key}
-
     base_url = 'https://pro-api.coinmarketcap.com'
 
     print()
