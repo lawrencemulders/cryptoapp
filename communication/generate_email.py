@@ -1,9 +1,12 @@
 import smtplib
 import time
 import schedule
+import queue
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from dotenv import dotenv_values
+
+email_queue = queue.Queue()
 
 config = dotenv_values(".env")
 
@@ -18,8 +21,10 @@ smtp_password = config["SMTPPASSWORD"]
 sender_email = config["SMTPUSERNAME"]
 recipient_email = config["RECIPIENTEMAIL"]
 
+scheduled_email_queue = queue.Queue()
 
-def send_email(merged_table):
+
+def send_email(table):
 
     # Create a message object
     message = MIMEMultipart()
@@ -27,7 +32,7 @@ def send_email(merged_table):
     message['To'] = recipient_email
     message['Subject'] = 'CryptoApp: Movement Update'
 
-    html_table = merged_table.get_html_string(attributes={"border": "1"})
+    html_table = table.get_html_string(attributes={"border": "1"})
     html_content = f"""
     <html>
     <head>
@@ -74,7 +79,7 @@ def send_email(merged_table):
         print(f'Error sending email: {e}')
 
 
-def send_scheduled_email(merged_table):
+def send_scheduled_email(table):
 
     schedule_time = config.get("SCHEDULE_TIME")
     schedule_day = config.get("SCHEDULE_DAY")
@@ -85,7 +90,7 @@ def send_scheduled_email(merged_table):
     message['To'] = recipient_email
     message['Subject'] = 'CryptoApp: Movement Update'
 
-    html_table = merged_table.get_html_string(attributes={"border": "1"})
+    html_table = table.get_html_string(attributes={"border": "1"})
     html_content = f"""
     <html>
     <head>
@@ -128,11 +133,20 @@ def send_scheduled_email(merged_table):
             server.sendmail(sender_email, recipient_email, message.as_string())
 
         print('Email sent successfully!')
-    except Exception as e:
-        print(f'Error sending email: {e}')
+    except smtplib.SMTPException as e:
+        print(f"Error sending email to {recipient_email}: {e}")
+        # Enqueue the email task to be retried later
+        scheduled_email_queue.put((table, message))
 
     getattr(schedule.every(), schedule_day).at(schedule_time).do(send_scheduled_email)
 
+    # Main loop to process the email queue and check scheduled tasks
     while True:
+        # Check if there are scheduled email tasks in the queue
+        while not scheduled_email_queue.empty():
+            table, message = scheduled_email_queue.get()
+            send_scheduled_email(table)
+            # Add a delay before resending email if no connection
+            time.sleep(3600)  # 1-hour delay
         schedule.run_pending()
         time.sleep(1)

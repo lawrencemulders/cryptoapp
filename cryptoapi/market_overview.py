@@ -1,7 +1,7 @@
 import requests
 from dotenv import dotenv_values
 
-# Retrieve a generic overview of the cryptocurrency market
+# Generate overview of the market.
 
 
 def market_overview_crypto():
@@ -9,18 +9,14 @@ def market_overview_crypto():
     local_currency = 'USD'
     local_symbol = '$'
 
-    config = dotenv_values(".env")
-    api_key = config["APIKEYCRYPTO"]
+    api_key = dotenv_values(".env")["APIKEYCRYPTO"]
     headers = {'X-CMC_PRO_API_KEY': api_key}
-
     base_url = 'https://pro-api.coinmarketcap.com'
 
     global_url = base_url + '/v1/global-metrics/quotes/latest'
 
     request = requests.get(global_url, headers=headers)
     results = request.json()
-
-    # print(json.dumps(results, sort_keys=True, indent=4))
 
     data = results["data"]
 
