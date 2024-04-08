@@ -42,10 +42,11 @@ def schedule_email_flow_crypto():
     #   1) Initialize .env configuration and PrettyTable
 
     csvfile = dotenv_values(".env")["CSVFILE"]
+    print("Successfully accessed csv")
 
     table = PrettyTable(['Asset', 'Amount Owned', 'Value', 'Price', '1h', '24h', '7d', 'Sentiment'])
 
-    #  2) Perform API call per row in csvfile
+    #  2) Iterate for each asset, update table
 
     with open(csvfile, "r", encoding='utf-8') as csv_file:
         csv_reader = csv.reader(csv_file)
@@ -61,13 +62,9 @@ def schedule_email_flow_crypto():
 
     print("Processed all lines in csv")
 
-    #   3) Generate merge table
+    #   3) Send notification based on schedule config
 
-    processing_results = table.get_string(header=False).split("\n")[1:]
-
-    #   4) Send notification based on schedule config
-
-    schedule.every().sunday.at('12:00').do(send_scheduled_email(processing_results))
+    schedule.every().sunday.at('12:00').do(send_scheduled_email(table))
     while True:
         schedule.run_pending()
         time.sleep(1)
