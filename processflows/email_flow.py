@@ -1,4 +1,5 @@
 from communication.generate_email import *
+from docker.generate_plist_launchd import generate_plist_file
 from processflows.metric_composer import *
 from dotenv import dotenv_values
 from prettytable import PrettyTable
@@ -37,12 +38,14 @@ def trial_email_flow():
     send_email(table)
 
 
-def schedule_email_flow_crypto():
+def schedule_email_flow():
 
-    #   1) Initialize .env configuration and PrettyTable
+    #   1) Initialize .env configuration, plist file (macOS) and PrettyTable
 
     csvfile = dotenv_values(".env")["CSVFILE"]
     print("Successfully accessed csv")
+
+    generate_plist_file()
 
     table = PrettyTable(['Asset', 'Amount Owned', 'Value', 'Price', '1h', '24h', '7d', 'Sentiment'])
 
