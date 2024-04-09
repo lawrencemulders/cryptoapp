@@ -34,7 +34,7 @@ def generate_plist_file():
     launchd_dir = os.path.expanduser("~/Library/LaunchAgents/")
 
     # Define the path to the plist file
-    plist_path = os.path.join(launchd_dir, "my_launchd_job.plist")
+    plist_path = os.path.join(launchd_dir, "launchd_job.plist")
 
     # Remove the existing plist file if it exists, allow for new config settings
     if os.path.exists(plist_path):
