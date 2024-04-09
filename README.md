@@ -2,7 +2,7 @@
 
 This readme is an introduction to a project currently being build: a notification application which generates a scheduled email providing a summary of stock/crypto performances. To keep costs at zero, no database is implemented and a local csv file is used to iterate and monitor progress.
 
-Thus far an API has been build for crypto which feeds the scheduled email providing the recipient with all reqquested metrics.
+API's are leveraged to gather the required data from both crypto and stock assets. The user can select the relevant metrics and additional weekly/daily scheduling.
 
 Several features include:
 (1) Threading to improve performance for I/O bound operations when making HTTP requests
