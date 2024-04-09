@@ -45,7 +45,7 @@ Note: CSVFILE must contain a file of csv format e.g. Crypto.csv where no headers
 
 To containerize this application, several steps are to be performed. The following prerequesites are assumed:
 - Docker desktop is installed
-- Able to run commands with this project as active directory
+- Able to run commands with this project as active directory in a suitable IDE
 
 The application contains the necessary Dockerfile to containerize and create the image. However, 2 commands must be executed to initialize the scheduling:
 - docker build -t python-cryptoapp -f docker/Dockerfile .
