@@ -8,12 +8,12 @@ Several features include:
 (1) Threading to improve performance for I/O bound operations when making HTTP requests
 (2) Apply NLP models to determine a sentiment score per crypto
 (3) Performing API calls for specific use cases (see main.py)
+(4) Allowing for scheduled emailing based on a container (Docker) and launchd (macOS-specific)
 
 Upcoming iterations:
 (1) Review Hugging Face for further metrics
-(2) Enable local tasks
-(3) Expand stock API use cases
-(4) Allow for modifying the excel to keep track of historical progress
+(2) Expand stock API use cases
+(3) Introduce a website to allow for a user-friendly installation guide
 
 # Env File
 
@@ -40,3 +40,15 @@ Note: APIKEYCRYPTO / APIKEYSTOCK can be obtained when creating a free dev accoun
 - Alpha Vantage has a free tier which limits to 25 API calls
 
 Note: CSVFILE must contain a file of csv format e.g. Crypto.csv where no headers are present and column 1 contains the ticker column 2 the quanityt of each asset, and column 3 must contain either 0 (stock) or 1 (crypto). The csv file must be stored within the project.
+
+# Docker and Launchd (macOS specific)
+
+To containerize this application, several steps are to be performed. The following prerequesites are assumed:
+- Docker desktop is installed
+- Able to run commands with this project as active directory
+
+The application contains the necessary Dockerfile to containerize and create the image. However, 2 commands must be executed to initialize the scheduling:
+- docker build -t python-cryptoapp -f docker/Dockerfile .
+- docker run -i -t python-cryptoapp
+
+In addition to running the commands, to enable scheduled emails, an additional step is required to be performed: run main.py and select option 7. This will create an initial plist file which will trigger a process flow to generate an email based on the configuration provided in the .env file (SCHEDULE_DAY and SCHEDULE_TIME)
