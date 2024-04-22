@@ -16,7 +16,14 @@ def generate_plist_file():
         <key>Label</key>
         <string>com.cryptoapp.docker</string>
         <key>Program</key>
-        <string>/cryptoapp/docker/Dockerfile</string>
+        <string>/usr/local/bin/docker</string>
+        <key>ProgramArguments</key>
+        <array>
+            <string>docker</string>
+            <string>run</string>
+            <string>-d</string>
+            <string>cryptoapp-image</string>
+        </array>
         <key>StartCalendarInterval</key>
         <dict>
             <key>Hour</key>
