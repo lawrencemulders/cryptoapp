@@ -2,7 +2,8 @@
 
 This readme is an introduction to a project currently being build: a notification application which generates a scheduled email providing a summary of stock/crypto performances. To keep costs at zero, no database is implemented and a local csv file is used to iterate and monitor progress.
 
-API's are leveraged to gather the required data from both crypto and stock assets. The user can select the relevant metrics and additional weekly/daily scheduling. The full workflow of constructing each email is shown below. Leveraging threading allows for enhanced efficiency.
+API's are leveraged to gather the required data from both crypto and stock assets. The user can select the relevant metrics and additional weekly/daily scheduling. The full workflow of constructing each email is shown below. Leveraging threading allows for enhanced efficiency when composing performance stats.
+
 ![notificationflow drawio](https://github.com/lawrencemulders/cryptoapp/assets/80403668/bc434dbf-02ce-404e-8bf4-6d85fe5c0578)
 
 Several existing features include:
