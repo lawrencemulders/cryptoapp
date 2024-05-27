@@ -12,7 +12,7 @@ load_dotenv()
 csv_file = os.getenv("CSVFILE")
 
 print()
-print("Welcome to app")
+print("Welcome to cryptoapp")
 print()
 
 print("This app creates a periodic notification regarding asset movements and market metrics."
