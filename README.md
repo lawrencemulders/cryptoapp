@@ -48,6 +48,6 @@ To containerize this application, several steps are to be performed. The followi
 - Docker desktop is installed
 - Able to run commands with this project as active directory in a suitable IDE
 
-The application contains the necessary Dockerfile to build and run the image based on .env configuration. However, the build.sh file must be run locally to enable scheduled notifications based on the configuration provided in the .env file (SCHEDULE_DAY and SCHEDULE_TIME). 
+The application contains the necessary Dockerfile to build and run the image based on .env configuration. However, the build.sh file must be run locally to enable scheduled notifications based on the configuration provided in the .env file (SCHEDULE_DAY and SCHEDULE_TIME). The configuration will be taken as a plist file and Launchd will handle the scheduling.
 
 When the user re-runs Build.sh, a new plist file will be generated using the current configuration in the .env file.
