@@ -3,11 +3,20 @@
 # Define the image name
 IMAGE_NAME="cryptoapp-image"
 
+# Path to the plist file
+PLIST_FILE="$HOME/Library/LaunchAgents/launchd_job.plist"
+
+# Check if the plist file exists. If so, delete
+if [ -f "$PLIST_FILE" ]; then
+    echo "Plist file already exists. Deleting..."
+    rm "$PLIST_FILE"
+fi
+
 # Initialize plist file
 PYTHON_SCRIPT="generate_plist_launchd.py"
 python "$PYTHON_SCRIPT"
 
-# Navigate to the root directory of the project
+# Navigate to the root directory
 cd "$(dirname "$0")"/..
 
 # Build Docker image if no image exists yet
