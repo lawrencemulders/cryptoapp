@@ -1,17 +1,26 @@
 # Use an official Python runtime as a parent image
 FROM python:3.11
 
-# Copy the contents of the cryptoapp directory into the container at /app/cryptoapp
-COPY .. /app/cryptoapp
+# Set the working directory in the container
+WORKDIR /cryptoapp
 
-# Set the working directory to the cryptoapp directory
-WORKDIR /app/cryptoapp
+# Set the PYTHONPATH environment variable
+ENV PYTHONPATH=/cryptoapp
 
-# Define build argument for the path to requirements.txt
-ARG REQUIREMENTS_FILE=requirements.txt
+# Copy requirements.txt and install dependencies
+COPY docker/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Install needed dependencies
-RUN pip install --no-cache-dir -r $REQUIREMENTS_FILE
+# Copy app directory into the container at /cryptoapp/app
+COPY app /cryptoapp/app
+
+# Copy docker directory into the container at /cryptoapp/docker
+COPY docker /cryptoapp/docker
+
+# Copy Excel file into the container at /cryptoapp/data
+COPY app/Crypto.csv /cryptoapp/app/Crypto.csv
 
 # Run the Python script
-CMD ["python", "email_flow.py", "schedule_email_flow"]
+CMD ["python", "app/main.py"]
+
+#CMD ["python", "email_flow.py", "schedule_email_flow"]

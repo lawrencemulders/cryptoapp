@@ -4,15 +4,19 @@ import sys
 import time
 import requests
 from datetime import datetime
-from dotenv import dotenv_values
+from dotenv import load_dotenv
 
 # Trigger alerts when price enters a predefined threshold. CSV file is used as source.
 
 
 def alert_tracking_crypto(csvfile):
+
     local_currency = 'USD'
 
-    api_key = dotenv_values(".env")["APIKEYCRYPTO"]
+    # Load environment variables from .env file
+    load_dotenv()
+
+    api_key = os.getenv("APIKEYCRYPTO")
     headers = {'X-CMC_PRO_API_KEY': api_key}
     base_url = 'https://pro-api.coinmarketcap.com'
 
@@ -23,7 +27,8 @@ def alert_tracking_crypto(csvfile):
     already_hit_symbols = []
 
     while True:
-        with open(csvfile, "r") as csv_file:
+        csvfile_path = "/cryptoapp/app/Crypto.csv"
+        with open(csvfile_path, "r") as csv_file:
             csv_reader = csv.reader(csv_file)
             for line in csv_reader:
                 if '\ufeff' in line[0]:
