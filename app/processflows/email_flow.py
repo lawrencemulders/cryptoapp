@@ -1,25 +1,41 @@
-from communication.generate_email import *
+from app.communication.generate_email import *
 from docker.generate_plist_launchd import generate_plist_file
-from processflows.metric_composer import *
-from dotenv import dotenv_values
+from app.processflows.metric_composer import *
 from prettytable import PrettyTable
+from dotenv import load_dotenv
 import csv
 import requests
 import threading
+import os
 
 
 def trial_email_flow():
 
     #   1) Initialize .env configuration and PrettyTable
 
-    csvfile = dotenv_values(".env")["CSVFILE"]
+    # Load environment variables from .env file
+    load_dotenv()
+
+    csvfile = os.getenv("CSVFILE")
     print("Successfully accessed csv")
 
     table = PrettyTable(['Asset', 'Amount Owned', 'Value', 'Price', '1h', '24h', '7d', 'Sentiment'])
 
     #  2) Perform API call per row in csvfile
 
-    with open(csvfile, "r", encoding='utf-8') as csv_file:
+    # Define the path for the CSV file
+    if os.path.isfile("/cryptoapp/app/Crypto.csv"):
+        csvfile_path = "/cryptoapp/app/Crypto.csv"
+    elif os.path.isfile("app/Crypto.csv"):
+        csvfile_path = "app/Crypto.csv"
+    else:
+        csvfile_path = csvfile
+
+    # Check if the file exists
+    if not os.path.isfile(csvfile_path):
+        raise FileNotFoundError(f"CSV file not found at path: {csvfile_path}")
+
+    with open(csvfile_path, "r", encoding='utf-8') as csv_file:
         csv_reader = csv.reader(csv_file)
         threads = []
 
@@ -42,7 +58,7 @@ def schedule_email_flow():
 
     #   1) Initialize .env configuration, plist file (macOS) and PrettyTable
 
-    csvfile = dotenv_values(".env")["CSVFILE"]
+    csvfile = os.getenv("CSVFILE")
     print("Successfully accessed csv")
 
     generate_plist_file()
@@ -51,7 +67,19 @@ def schedule_email_flow():
 
     #  2) Iterate for each asset, update table
 
-    with open(csvfile, "r", encoding='utf-8') as csv_file:
+    # Define the path for the CSV file
+    if os.path.isfile("/cryptoapp/app/Crypto.csv"):
+        csvfile_path = "/cryptoapp/app/Crypto.csv"
+    elif os.path.isfile("app/Crypto.csv"):
+        csvfile_path = "app/Crypto.csv"
+    else:
+        csvfile_path = csvfile
+
+    # Check if the file exists
+    if not os.path.isfile(csvfile_path):
+        raise FileNotFoundError(f"CSV file not found at path: {csvfile_path}")
+
+    with open(csvfile_path, "r", encoding='utf-8') as csv_file:
         csv_reader = csv.reader(csv_file)
         threads = []
 
@@ -94,7 +122,7 @@ def process_line(line, table):
 
         if is_crypto:
             # Perform Crypto api call
-            api_key = dotenv_values(".env")["APIKEYCRYPTO"]
+            api_key = os.getenv("APIKEYCRYPTO")
             headers = {'X-CMC_PRO_API_KEY': api_key}
             base_url = 'https://pro-api.coinmarketcap.com'
 
@@ -105,7 +133,7 @@ def process_line(line, table):
 
         else:
             # Perform Stock api call
-            api_key = dotenv_values(".env")["APIKEYSTOCK"]
+            api_key = os.getenv("APIKEYSTOCK")
             base_url = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY'
 
             quote_url = base_url + '&symbol=' + symbol + '&outputsize=compact&apikey=' + api_key

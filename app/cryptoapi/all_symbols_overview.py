@@ -1,5 +1,6 @@
 import requests
-from dotenv import dotenv_values
+import os
+from dotenv import load_dotenv
 
 # Generate overview for each symbol.
 
@@ -9,7 +10,10 @@ def list_crypto():
     local_currency = 'USD'
     local_symbol = '$'
 
-    api_key = dotenv_values(".env")["APIKEYCRYPTO"]
+    # Load environment variables from .env file
+    load_dotenv()
+
+    api_key = os.getenv("APIKEYCRYPTO")
     headers = {'X-CMC_PRO_API_KEY': api_key}
     base_url = 'https://pro-api.coinmarketcap.com'
 
@@ -21,7 +25,7 @@ def list_crypto():
 # print(json.dumps(results, sort_keys=True, indent=4))
 
     data = results["data"]
-# Loop through each cryptocurrency
+    # Loop through each cryptocurrency
     for currency in data:
         name = currency['name']
         symbol = currency['symbol']

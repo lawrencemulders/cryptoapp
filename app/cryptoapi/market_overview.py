@@ -1,5 +1,6 @@
 import requests
-from dotenv import dotenv_values
+import os
+from dotenv import load_dotenv
 
 # Generate overview of the market.
 
@@ -9,7 +10,10 @@ def market_overview_crypto():
     local_currency = 'USD'
     local_symbol = '$'
 
-    api_key = dotenv_values(".env")["APIKEYCRYPTO"]
+    # Load environment variables from .env file
+    load_dotenv()
+
+    api_key = os.getenv("APIKEYCRYPTO")
     headers = {'X-CMC_PRO_API_KEY': api_key}
     base_url = 'https://pro-api.coinmarketcap.com'
 

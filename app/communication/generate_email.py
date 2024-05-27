@@ -1,25 +1,32 @@
+import os
 import smtplib
 import time
 import schedule
 import queue
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from dotenv import dotenv_values
+from dotenv import load_dotenv
+
 
 email_queue = queue.Queue()
 
-config = dotenv_values(".env")
+# Load environment variables from .env file
+load_dotenv()
 
 # SMTP server details
 smtp_server = 'smtp.gmail.com'
-smtp_port = 587  # Use the appropriate port for your SMTP server
+smtp_port = 587  # Use the appropriate port for SMTP server
 
-# SMTP credentials (if required)
-smtp_username = config["SMTPUSERNAME"]
-smtp_password = config["SMTPPASSWORD"]
+# SMTP credentials
 
-sender_email = config["SMTPUSERNAME"]
-recipient_email = config["RECIPIENTEMAIL"]
+smtp_username = os.getenv("SMTPUSERNAME")
+# TO DO: convert to method
+if smtp_username is None:
+    raise KeyError(f"{smtp_username} environment variable is not set. Please check your .env file.")
+smtp_password = os.getenv("SMTPPASSWORD")
+
+sender_email = os.getenv("SMTPUSERNAME")
+recipient_email = os.getenv("RECIPIENTEMAIL")
 
 scheduled_email_queue = queue.Queue()
 
@@ -81,8 +88,11 @@ def send_email(table):
 
 def send_scheduled_email(table):
 
-    schedule_time = config.get("SCHEDULE_TIME")
-    schedule_day = config.get("SCHEDULE_DAY")
+    # Load environment variables from .env file
+    load_dotenv()
+
+    schedule_time = os.getenv("SCHEDULE_TIME")
+    schedule_day = os.getenv("SCHEDULE_DAY")
 
     # Create a message object
     message = MIMEMultipart()

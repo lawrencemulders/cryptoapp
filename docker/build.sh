@@ -1,26 +1,42 @@
 #!/bin/bash
 
-# Directory containing Dockerfile
-SCRIPT_DIR=$(dirname "$0")
-DOCKERFILE_DIR="$SCRIPT_DIR"
-
-# Name of Docker image
+# Define the image name
 IMAGE_NAME="cryptoapp-image"
 
 # Initialize plist file
-PYTHON_SCRIPT="$DOCKERFILE_DIR/generate_plist_launchd.py"
+PYTHON_SCRIPT="generate_plist_launchd.py"
 python "$PYTHON_SCRIPT"
 
-# Build Docker image
-docker build -t "$IMAGE_NAME" "$DOCKERFILE_DIR"
+# Navigate to the root directory of the project
+cd "$(dirname "$0")"/..
+
+# Build Docker image if no image exists yet
+docker build -t "$IMAGE_NAME" -f docker/Dockerfile .
+
+# Run Docker container with environment variables from .env file
+docker run -it --name cryptoapp --env-file app/.env "$IMAGE_NAME"
 
 # Load plist file into launchd
 LAUNCHD_DIR="$HOME/Library/LaunchAgents"
 PLIST_FILE="$LAUNCHD_DIR/launchd_job.plist"
 
 if [ -f "$PLIST_FILE" ]; then
-    launchctl load "$PLIST_FILE"
-    echo "Launchd job loaded successfully."
+    # Set Service ID from plist file
+    SERVICE_ID="com.cryptoapp.docker"
+
+    # Constructing the service target
+    SERVICE_TARGET="gui/$(id -u)/$SERVICE_ID"
+
+    # Load the launchd job
+    launchctl load ~/Library/LaunchAgents/launchd_job.plist
+
+    # Enable the launchd job
+    launchctl enable "$SERVICE_TARGET"
+    echo "Launchd job enabled successfully."
+
+    # Kickstart the launchd job
+    launchctl kickstart "$SERVICE_TARGET"
+    echo "Launchd job started successfully."
 else
     echo "Error: Launchd plist file '$PLIST_FILE' not found."
     exit 1
