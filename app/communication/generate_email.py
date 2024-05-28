@@ -2,13 +2,11 @@ import os
 import smtplib
 import time
 import schedule
-import queue
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from dotenv import load_dotenv
+from queue_handling import AutoRemoveQueue
 
-
-email_queue = queue.Queue()
 
 # Load environment variables from .env file
 load_dotenv()
@@ -28,7 +26,8 @@ smtp_password = os.getenv("SMTPPASSWORD")
 sender_email = os.getenv("SMTPUSERNAME")
 recipient_email = os.getenv("RECIPIENTEMAIL")
 
-scheduled_email_queue = queue.Queue()
+# Allow only 1 item pending in queue
+scheduled_email_queue = AutoRemoveQueue(maxsize=1)
 
 
 def send_email(table):
@@ -146,7 +145,7 @@ def send_scheduled_email(table):
     except smtplib.SMTPException as e:
         print(f"Error sending email to {recipient_email}: {e}")
         # Enqueue the email task to be retried later
-        scheduled_email_queue.put((table, message))
+        scheduled_email_queue.put(table)
 
     getattr(schedule.every(), schedule_day).at(schedule_time).do(send_scheduled_email)
 
@@ -154,7 +153,7 @@ def send_scheduled_email(table):
     while True:
         # Check if there are scheduled email tasks in the queue
         while not scheduled_email_queue.empty():
-            table, message = scheduled_email_queue.get()
+            table = scheduled_email_queue.get()
             send_scheduled_email(table)
             # Add a delay before resending email if no connection
             time.sleep(3600)  # 1-hour delay
