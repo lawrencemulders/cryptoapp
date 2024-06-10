@@ -24,10 +24,10 @@ def trial_email_flow():
     #  2) Perform API call per row in csvfile
 
     # Define the path for the CSV file
-    if os.path.isfile("/cryptoapp/app/Crypto.csv"):
-        csvfile_path = "/cryptoapp/app/Crypto.csv"
-    elif os.path.isfile("app/Crypto.csv"):
-        csvfile_path = "app/Crypto.csv"
+    if os.path.isfile("/cryptoapp/app/" + csvfile):
+        csvfile_path = "/cryptoapp/app/" + csvfile
+    elif os.path.isfile("app/" + csvfile):
+        csvfile_path = "app/" + csvfile
     else:
         csvfile_path = csvfile
 
@@ -68,10 +68,10 @@ def schedule_email_flow():
     #  2) Iterate for each asset, update table
 
     # Define the path for the CSV file
-    if os.path.isfile("/cryptoapp/app/Crypto.csv"):
-        csvfile_path = "/cryptoapp/app/Crypto.csv"
-    elif os.path.isfile("app/Crypto.csv"):
-        csvfile_path = "app/Crypto.csv"
+    if os.path.isfile("/cryptoapp/app/" + csvfile):
+        csvfile_path = "/cryptoapp/app/" + csvfile
+    elif os.path.isfile("app/" + csvfile):
+        csvfile_path = "app/" + csvfile
     else:
         csvfile_path = csvfile
 
