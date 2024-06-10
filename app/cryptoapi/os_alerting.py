@@ -27,7 +27,7 @@ def alert_tracking_crypto(csvfile):
     already_hit_symbols = []
 
     while True:
-        csvfile_path = "/cryptoapp/app/Crypto.csv"
+        csvfile_path = "/cryptoapp/app/" + csvfile
         with open(csvfile_path, "r") as csv_file:
             csv_reader = csv.reader(csv_file)
             for line in csv_reader:

@@ -5,7 +5,7 @@ import schedule
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from dotenv import load_dotenv
-from queue_handling import AutoRemoveQueue
+from app.communication.queue_handling import *
 
 
 # Load environment variables from .env file

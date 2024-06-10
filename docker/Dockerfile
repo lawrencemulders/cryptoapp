@@ -17,10 +17,5 @@ COPY app /cryptoapp/app
 # Copy docker directory into the container at /cryptoapp/docker
 COPY docker /cryptoapp/docker
 
-# Copy Excel file into the container at /cryptoapp/data
-COPY app/Crypto.csv /cryptoapp/app/Crypto.csv
-
 # Run the Python script
-CMD ["python", "app/main.py"]
-
-#CMD ["python", "email_flow.py", "schedule_email_flow"]
+CMD ["python", "app/processflows/email_flow.py", "schedule_email_flow"]
