@@ -7,13 +7,8 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 nltk.downloader.download('vader_lexicon')
 nltk.download('punkt')
 
-# Determine market sentiment using Google API webscraper.
-
 
 def determine_sentiment(symbol):
-
-    # Step 1: Extract data based on symbol
-
     num_pages = 1
     now = date.today()
     yesterday = date.today() - timedelta(days=1)
@@ -25,8 +20,6 @@ def determine_sentiment(symbol):
 
     result = google_news.result()
     df = DataFrame(result)
-
-    # Step 2: Summarize found articles
 
     article_list = []
 
@@ -52,8 +45,6 @@ def determine_sentiment(symbol):
 
     news_df = DataFrame(article_list)
 
-    # Step 3: Sentiment analysis
-
     positive = 0
     negative = 0
     neutral = 0
@@ -63,7 +54,6 @@ def determine_sentiment(symbol):
     positive_list = []
 
     try:
-
         for news in news_df['Summary']:
             news_list.append(news)
             analyzer = SentimentIntensityAnalyzer().polarity_scores(news)
@@ -81,9 +71,7 @@ def determine_sentiment(symbol):
                 neutral += 1
 
         positive_percentage = (positive / len(news_df)) * 100
-
         print("Sentiment:", '%.2f' % positive_percentage, end='\n')
-
     except KeyError:
         print(f"Failed to access Summary column in news_df: {KeyError}")
         positive_percentage = 50.0  # set to neutral

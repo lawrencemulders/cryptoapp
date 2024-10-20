@@ -1,9 +1,10 @@
-from app.cryptoapi.market_overview import *
-from app.cryptoapi.all_symbols_overview import *
-from app.cryptoapi.symbol_overview import *
-from app.cryptoapi.top_100_overview import *
-from app.cryptoapi.os_alerting import *
-from app.processflows.email_flow import *
+from app.other_crypto_usecases.market_overview import *
+from app.other_crypto_usecases.all_symbols_overview import *
+from app.other_crypto_usecases.symbol_overview import *
+from app.other_crypto_usecases.top_100_overview import *
+from app.other_crypto_usecases.os_alerting import *
+from app.process_flows.table_composer import *
+from docker.generate_plist_launchd import *
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
