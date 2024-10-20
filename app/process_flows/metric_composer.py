@@ -1,19 +1,16 @@
 from app.metrics.price_change_time import *
 from app.metrics.sentiment_analysis import *
-from dotenv import load_dotenv
 import os
 
 
 def metric_composer(table, results, symbol, amount, is_crypto):
-
     # Load environment variables from .env file
-    load_dotenv()
-
     use_percentage_change_time = os.getenv("PERCENTAGECHANGETIME")
     use_sentiment_analysis = os.getenv("SENTIMENTANALYSIS")
 
     if use_percentage_change_time:
-        table = price_change_time(table, results, symbol, amount, is_crypto)
+        metrics = PercentageChangeMetrics(table, results, symbol, amount, is_crypto)
+        table = metrics.price_change_time()
 
     if use_sentiment_analysis:
         # Find the index of the "Sentiment" column
