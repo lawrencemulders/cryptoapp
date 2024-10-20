@@ -7,13 +7,13 @@ API's are leveraged to gather the required data from both crypto and stock asset
 ![notificationflow drawio](https://github.com/lawrencemulders/cryptoapp/assets/80403668/bc434dbf-02ce-404e-8bf4-6d85fe5c0578)
 
 Several existing features include:
-(1) An Async Manager allowing for asynchronous I/O and multithreading to improve performance for I/O bound operations when making HTTP requests.
-(2) An NLP model to determine a sentiment score per asset (leveraging Reddit and Twitter API)
-(3) Performing API calls for other specific use cases (see main.py options 2-6)
-(4) Allowing for scheduled emailing based on a container (Docker) and launchd (macOS-specific)
+- An Async Manager allowing for asynchronous I/O and multithreading to improve performance for I/O bound operations when making HTTP requests.
+- An NLP model to determine a sentiment score per asset (leveraging Reddit and Twitter API)
+- Performing API calls for other specific use cases (see main.py options 2-6)
+- Allowing for scheduled emailing based on a container (Docker) and launchd (macOS-specific)
 
 Upcoming iterations:
-(1) Implement Reddit and Twitter API to leverage Async Manager further
+(1) Implement Reddit and Twitter API to leverage Async Manager further and 
 (2) Introduce a site using Flask to allow for a user-friendly installation guide
 
 # Env File
