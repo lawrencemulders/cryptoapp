@@ -1,5 +1,6 @@
-# Use an official Python runtime as a parent image
-FROM python:3.11
+# Use an official Python runtime as a parent image.
+# Note: changed from 3.11 to 3.9 due to docker build issue when installing Foil (sub directory) for 1 or more packages
+FROM python:3.9
 
 # Set the working directory in the container
 WORKDIR /cryptoapp
