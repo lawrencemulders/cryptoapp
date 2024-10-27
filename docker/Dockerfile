@@ -18,4 +18,4 @@ COPY app /cryptoapp/app
 COPY docker /cryptoapp/docker
 
 # Run the Python script
-CMD ["python", "app/processflows/email_flow.py", "schedule_email_flow"]
+CMD ["python", "app/process_flows/table_composer.py", "trial_email_flow"]
