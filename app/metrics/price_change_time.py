@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 
 
 class PercentageChangeMetrics:
-
     def __init__(self, table, results, symbol, amount, is_crypto):
         self.table = table
         self.results = results

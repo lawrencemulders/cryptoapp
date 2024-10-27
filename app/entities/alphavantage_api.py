@@ -1,19 +1,17 @@
 import requests
 
 
-class CryptoAPI:
-
+class StockAPI:
     def __init__(self, api_key):
         self.api_key = api_key
-        self.base_url = 'https://pro-api.coinmarketcap.com'
+        self.base_url = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY'
 
     def fetch_data(self, symbol):
-        # Establish API call parameters
-        quote_url = self.base_url + '/v1/cryptocurrency/quotes/latest?convert=USD&symbol=' + symbol
-        headers = {'X-CMC_PRO_API_KEY': self.api_key}
+        """Fetch data points related to the symbol."""
+        quote_url = self.base_url + '&symbol=' + symbol + '&outputsize=compact&apikey=' + self.api_key
 
         # Perform Get call
-        response = requests.get(quote_url, headers=headers)
+        response = requests.get(quote_url)
 
         # Handle response
         if response.status_code != 200:

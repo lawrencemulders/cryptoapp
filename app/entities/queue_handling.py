@@ -3,6 +3,7 @@ import queue
 
 class AutoRemoveQueue(queue.Queue):
     def put(self, item, block=True, timeout=None):
+        """Allow only for 1 item on the queue."""
         while self.full():
             try:
                 # Remove old items
