@@ -27,6 +27,10 @@ General Config
 - SMTPPASSWORD=
 - APIKEYCRYPTO=
 - APIKEYSTOCK=
+- REDDITCLIENTID=
+- REDDITCLIENTSECRET=
+- REDDITUSERAGENT=
+- TWITTERBEARERTOKEN
 
 Metric Config
 - PERCENTAGECHANGETIME=true
@@ -39,6 +43,7 @@ Notification Schedule Config
 Note: APIKEYCRYPTO / APIKEYSTOCK can be obtained when creating a free dev account at https://pro-api.coinmarketcap.com / https://www.alphavantage.co/
 - Coin market cap has a free tier which limits to 10,000 daily API calls
 - Alpha Vantage has a free tier which limits to 25 daily API calls
+Similiar can be done for REDDITCLIENTID, REDDITCLIENTSECRET, REDDITUSERAGENT and TWITTERBEARERTOKEN on their respective free tier developer accounts https://www.reddit.com/prefs/apps/ / https://developer.x.com/en/portal/dashboard
 
 Note: CSVFILE must contain a file of csv format e.g. Crypto.csv where no headers are present and column 1 contains the ticker column 2 the quanityt of each asset, and column 3 must contain either 0 (stock) or 1 (crypto). The csv file must be stored within the app directory.
 
