@@ -9,13 +9,13 @@ from dotenv import load_dotenv
 # Trigger alerts when price enters a predefined threshold. CSV file is used as source.
 
 
-def alert_tracking_crypto(csvfile):
+def alert_tracking_crypto():
 
     local_currency = 'USD'
 
     # Load environment variables from .env file
     load_dotenv()
-
+    csvfile = os.getenv("CSVFILE")
     api_key = os.getenv("APIKEYCRYPTO")
     headers = {'X-CMC_PRO_API_KEY': api_key}
     base_url = 'https://pro-api.coinmarketcap.com'

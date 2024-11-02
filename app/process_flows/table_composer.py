@@ -1,4 +1,4 @@
-from app.communication.generate_email import *
+from app.communication.send_email import *
 from app.entities.async_manager import *
 from app.entities.coinmarketcap_api import CryptoAPI
 from app.entities.alphavantage_api import StockAPI
@@ -8,10 +8,8 @@ from dotenv import load_dotenv
 import os
 
 
-def trial_email_flow():
-    # Load environment variables from .env file
+def generate_email_flow():
     load_dotenv()
-
     csvfile = os.getenv("CSVFILE")
     print("Successfully accessed csv")
 
