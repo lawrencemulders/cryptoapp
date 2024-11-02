@@ -5,12 +5,6 @@ from app.other_crypto_usecases.top_100_overview import *
 from app.other_crypto_usecases.os_alerting import *
 from app.process_flows.table_composer import *
 from docker.generate_plist_launchd import *
-from dotenv import load_dotenv
-
-# Load environment variables from .env file
-load_dotenv()
-
-csv_file = os.getenv("CSVFILE")
 
 print()
 print("Welcome to cryptoapp")
@@ -33,7 +27,7 @@ print()
 choice = input("What is your choice (1-7)? ")
 
 if choice == '1':
-    trial_email_flow()
+    generate_email_flow()
 if choice == '2':
     market_overview_crypto()
 if choice == '3':
@@ -43,7 +37,7 @@ if choice == '4':
 if choice == '5':
     top100_crypto()
 if choice == '6':
-    alert_tracking_crypto(csv_file)
+    alert_tracking_crypto()
 if choice == '7':
     generate_plist_file()
 if choice == '0':
