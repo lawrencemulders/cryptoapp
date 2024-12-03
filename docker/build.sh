@@ -1,52 +1,42 @@
 #!/bin/bash
 
-# Define the image name
+# Define variables
 IMAGE_NAME="cryptoapp-image"
-
-# Path to the plist file
-PLIST_FILE="$HOME/Library/LaunchAgents/launchd_job.plist"
-
-# Check if the plist file exists. If so, delete
-if [ -f "$PLIST_FILE" ]; then
-    echo "Plist file already exists. Deleting..."
-    rm "$PLIST_FILE"
-fi
-
-# Initialize plist file
-PYTHON_SCRIPT="generate_plist_launchd.py"
-python "$PYTHON_SCRIPT"
+CONTAINER_NAME="cryptoapp"
+DOCKERFILE_PATH="docker/Dockerfile"
+ENV_FILE="app/.env"
 
 # Navigate to the root directory
 cd "$(dirname "$0")"/..
 
-# Build Docker image if no image exists yet
-docker build -t "$IMAGE_NAME" -f docker/Dockerfile .
-
-# Run Docker container with environment variables from .env file
-docker run -it --name cryptoapp --env-file app/.env "$IMAGE_NAME"
-
-# Load plist file into launchd
-LAUNCHD_DIR="$HOME/Library/LaunchAgents"
-PLIST_FILE="$LAUNCHD_DIR/launchd_job.plist"
-
-if [ -f "$PLIST_FILE" ]; then
-    # Set Service ID from plist file
-    SERVICE_ID="com.cryptoapp.docker"
-
-    # Constructing the service target
-    SERVICE_TARGET="gui/$(id -u)/$SERVICE_ID"
-
-    # Load the launchd job
-    launchctl load ~/Library/LaunchAgents/launchd_job.plist
-
-    # Enable the launchd job
-    launchctl enable "$SERVICE_TARGET"
-    echo "Launchd job enabled successfully."
-
-    # Kickstart the launchd job
-    launchctl kickstart "$SERVICE_TARGET"
-    echo "Launchd job started successfully."
-else
-    echo "Error: Launchd plist file '$PLIST_FILE' not found."
+# Check if the Dockerfile exists
+if [ ! -f "$DOCKERFILE_PATH" ]; then
+    echo "Error: Dockerfile not found at $DOCKERFILE_PATH"
     exit 1
 fi
+
+# Build Docker image if it does not already exist
+if ! docker image inspect "$IMAGE_NAME" > /dev/null 2>&1; then
+    echo "Building Docker image '$IMAGE_NAME'..."
+    docker build -t "$IMAGE_NAME" -f "$DOCKERFILE_PATH" .
+else
+    echo "Docker image '$IMAGE_NAME' already exists. Skipping build."
+fi
+
+# Check if a container with the same name is running
+if docker ps --filter "name=$CONTAINER_NAME" --format "{{.Names}}" | grep -w "$CONTAINER_NAME" > /dev/null 2>&1; then
+    echo "Stopping existing container '$CONTAINER_NAME'..."
+    docker stop "$CONTAINER_NAME"
+    echo "Removing existing container '$CONTAINER_NAME'..."
+    docker rm "$CONTAINER_NAME"
+fi
+
+# Verify the environment file exists
+if [ ! -f "$ENV_FILE" ]; then
+    echo "Error: .env file not found at $ENV_FILE"
+    exit 1
+fi
+
+# Run Docker container
+echo "Running Docker container '$CONTAINER_NAME'..."
+docker run -it --name "$CONTAINER_NAME" --env-file "$ENV_FILE" "$IMAGE_NAME"
