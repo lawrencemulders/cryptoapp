@@ -51,4 +51,3 @@ def create_app(test_config=None):
             file.write("ticker,quantity,isCrypto\n")
 
     return app
-
