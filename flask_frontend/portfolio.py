@@ -1,88 +1,66 @@
 from flask import (
-    Blueprint, flash, redirect, render_template, request, url_for
+    Blueprint, redirect, render_template, request, url_for, current_app
 )
-from werkzeug.exceptions import abort
-from flask_frontend.csv import read_csv, write_csv
 
 bp = Blueprint('portfolio', __name__)
 
 
-@bp.route('/')
-def index():
-    posts = read_csv()
-    return render_template('portfolio/index.html', posts=posts)
+@bp.route('/portfolio')
+def portfolio():
+    portfolio_data = get_portfolio()
+    return render_template('portfolio.html', portfolio=portfolio_data)
 
 
-@bp.route('/create', methods=('GET', 'POST'))
-def create():
-    if request.method == 'POST':
-        ticker = request.form['ticker']
-        quantity = request.form['quantity']
-        crypto = request.form['isCrypto']
-
-        if not ticker:
-            return "Ticker is required!", 400
-
-        posts = read_csv()
-        new_post = {
-            'ticker': ticker,
-            'quantity': quantity,
-            'isCrypto': crypto
-        }
-        posts.append(new_post)
-        write_csv(posts)
-        return redirect(url_for('portfolio.index'))
-
-    return render_template('portfolio/create.html')
+@bp.route('/portfolio/add', methods=['POST'])
+def add_portfolio():
+    ticker = request.form['ticker']
+    quantity = request.form['quantity']
+    is_crypto = request.form['isCrypto']
+    add_to_portfolio(ticker, quantity, is_crypto)
+    return redirect(url_for('views.portfolio'))
 
 
-def get_asset(ticker):
-    assets = read_csv()
-    asset = next((a for a in assets if int(a['ticker']) == ticker), None)
-
-    if asset is None:
-        abort(404, f"Post ticker {ticker} doesn't exist.")
-
-    return asset
-
-
-@bp.route('/<string:ticker>/update', methods=('GET', 'POST'))
-def update(ticker):
-    asset = get_asset(ticker)
-
-    if request.method == 'POST':
-        ticker = request.form['ticker']
-        quantity = request.form['quantity']
-        crypto = request.form['isCrypto']
-        error = None
-
-        if not ticker:
-            error = 'Ticker is required.'
-
-        if error is not None:
-            flash(error)
-        else:
-            assets = read_csv()
-            for a in assets:
-                if int(a['id']) == id:
-                    a['title'] = ticker
-                    a['body'] = quantity
-                    a['crypto'] = crypto
-                    break
-            write_csv(assets)
-
-            return redirect(url_for('portfolio.index'))
-
-    return render_template('portfolio/update.html', post=asset)
+@bp.route('/portfolio/update', methods=['POST'])
+def update_portfolio():
+    ticker = request.form['ticker']
+    quantity = request.form['quantity']
+    is_crypto = request.form['isCrypto']
+    update_portfolio_entry(ticker, quantity, is_crypto)
+    return redirect(url_for('views.portfolio'))
 
 
-@bp.route('/<string:ticker>/delete', methods=('POST',))
-def delete(ticker):
-    get_asset(ticker)
+@bp.route('/portfolio/delete', methods=['POST'])
+def delete_portfolio():
+    ticker = request.form['ticker']
+    delete_from_portfolio(ticker)
+    return redirect(url_for('views.portfolio'))
 
-    assets = read_csv()
-    updated_posts = [a for a in assets if int(a['ticker']) != ticker]
 
-    write_csv(updated_posts)
+def get_portfolio():
+    """Retrieve the entire portfolio as a list of dictionaries."""
+    csv_handler = current_app.get_csv_handler()
+    return csv_handler.read_all()
 
-    return redirect(url_for('portfolio.index'))
+
+def get_filtered_entries(is_crypto):
+    """Filter portfolio entries based on type (crypto or stock)."""
+    portfolio = get_portfolio()
+    return [row for row in portfolio if row['isCrypto'] == str(int(is_crypto))]
+
+
+def add_to_portfolio(ticker, quantity, is_crypto):
+    """Add a new entry to the portfolio."""
+    csv_handler = current_app.get_csv_handler()
+    csv_handler.add_entry(ticker, quantity, str(int(is_crypto)))
+
+
+def update_portfolio_entry(ticker, quantity, is_crypto):
+    """Update an existing portfolio entry."""
+    csv_handler = current_app.get_csv_handler()
+    csv_handler.update_entry(ticker, quantity, str(int(is_crypto)))
+
+
+def delete_from_portfolio(ticker):
+    """Delete an entry from the portfolio."""
+    csv_handler = current_app.get_csv_handler()
+    csv_handler.delete_entry(ticker)

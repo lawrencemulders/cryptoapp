@@ -1,32 +1,40 @@
 import os
-from flask import Flask
+from flask import Flask, g
+from dotenv import load_dotenv
+from .csv import CSVHandler
+import logging
 
 
 def create_app(test_config=None):
-    # Application Factory Function: create and configure the app
+    load_dotenv()
+
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
-        SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'flask.sqlite'),
+        SECRET_KEY=os.getenv('SECRET_KEY', 'dev'),
+        CSV_FILE_PATH=os.getenv('CSV_FILE_PATH', 'data.csv'),
     )
 
-    if test_config is None:
-        # load the instance config, if it exists, when not testing
-        app.config.from_pyfile('config.py', silent=True)
-    else:
-        # load the test config if passed in
-        app.config.from_mapping(test_config)
+    if test_config:
+        app.config.update(test_config)
 
-    # ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
     except OSError:
         pass
 
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
+    def get_csv_handler():
+        if 'csv_handler' not in g:
+            g.csv_handler = CSVHandler(app.config['CSV_FILE_PATH'])
+        return g.csv_handler
+
+    @app.teardown_appcontext
+    def teardown_csv_handler(exception):
+        g.pop('csv_handler', None)
+
+    # Logging setup
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
+    logger.info("Application initialized")
 
     from . import csv
     from . import portfolio
@@ -34,5 +42,12 @@ def create_app(test_config=None):
     app.register_blueprint(portfolio.bp)
 
     app.add_url_rule('/', endpoint='index')
+
+    # CSV error handling
+    csv_path = app.config['CSV_FILE_PATH']
+    if not os.path.exists(csv_path):
+        logger.warning(f"CSV file {csv_path} does not exist. Creating an empty one.")
+        with open(csv_path, mode='w', newline='') as file:
+            file.write("ticker,quantity,isCrypto\n")
 
     return app

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+</head>
+<body>
+    <h1>Your Portfolio</h1>
+
+    <!-- Display portfolio totals -->
+    <h2>Totals</h2>
+    <p><strong>Crypto Total: </strong>{{ totals.tot§al_crypto }}</p>
+    <p><strong>Stock Total: </strong>{{ totals.total_stocks }}</p>
+
+    <h2>Portfolio Entries</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Ticker</th>
+                <th>Quantity</th>
+                <th>Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in portfolio %}
+                <tr>
+                    <td>{{ entry.ticker }}</td>
+                    <td>{{ entry.quantity }}</td>
+                    <td>{{ 'Crypto' if entry.isCrypto == '1' else 'Stock' }}</td>
+                    <td>
+                        <!-- Update form -->
+                        <form action="{{ url_for('views.update_entry', ticker=entry.ticker) }}" method="post" style="display:inline;">
+                            <input type="number" name="quantity" value="{{ entry.quantity }}" required>
+                            <select name="isCrypto">
+                                <option value="0" {% if entry.isCrypto == '0' %}selected{% endif %}>Stock</option>
+                                <option value="1" {% if entry.isCrypto == '1' %}selected{% endif %}>Crypto</option>
+                            </select>
+                            <button type="submit">Update</button>
+                        </form>
+
+                        <!-- Delete form -->
+                        <form action="{{ url_for('views.delete_entry', ticker=entry.ticker) }}" method="post" style="display:inline;">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">No entries found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Add New Entry</h2>
+    <form action="{{ url_for('views.add_portfolio') }}" method="post">
+        <label for="ticker">Ticker:</label>
+        <input type="text" name="ticker" id="ticker" required>
+        <label for="quantity">Quantity:</label>
+        <input type="number" name="quantity" id="quantity" required>
+        <label for="isCrypto">Type:</label>
+        <select name="isCrypto" id="isCrypto">
+            <option value="0">Stock</option>
+            <option value="1">Crypto</option>
+        </select>
+        <button type="submit">Add Entry</button>
+    </form>
+</body>
+</html>
