@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}New Portfolio Entry{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="ticker">Ticker</label>
+    <input type="text" name="ticker" id="ticker" required>
+
+    <label for="quantity">Quantity</label>
+    <input type="number" name="quantity" id="quantity" required>
+
+    <label for="is_crypto">Is Crypto?</label>
+    <input type="checkbox" name="is_crypto" id="is_crypto">
+
+    <button type="submit">Create</button>
+    <a href="{{ url_for('portfolio.index') }}">Cancel</a>
+  </form>
+{% endblock %}

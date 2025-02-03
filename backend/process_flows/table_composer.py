@@ -1,8 +1,8 @@
-from app.communication.send_email import *
-from app.entities.async_manager import *
-from app.entities.coinmarketcap_api import CryptoAPI
-from app.entities.alphavantage_api import StockAPI
-from app.process_flows.metric_composer import *
+from backend.communication.send_email import *
+from backend.entities.async_manager import *
+from backend.entities.coinmarketcap_api import CryptoAPI
+from backend.entities.alphavantage_api import StockAPI
+from backend.process_flows.metric_composer import *
 from prettytable import PrettyTable
 from dotenv import load_dotenv
 import os
@@ -16,10 +16,10 @@ def generate_email_flow():
     table = PrettyTable(['Asset', 'Amount Owned', 'Value', 'Price', '1h', '24h', '7d', 'Sentiment'])
 
     # Define the path for the CSV file
-    if os.path.isfile("/cryptoapp/app/" + csvfile):
-        csvfile_path = "/cryptoapp/app/" + csvfile
-    elif os.path.isfile("app/" + csvfile):
-        csvfile_path = "app/" + csvfile
+    if os.path.isfile("/cryptoapp/`backend/" + csvfile):
+        csvfile_path = "/cryptoapp/backend/" + csvfile
+    elif os.path.isfile("backend/" + csvfile):
+        csvfile_path = "backend/" + csvfile
     else:
         csvfile_path = csvfile
 

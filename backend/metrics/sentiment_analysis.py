@@ -1,5 +1,5 @@
 import os
-from app.entities.sentiment_manager import SentimentManager
+from backend.entities.sentiment_manager import SentimentManager
 
 
 def determine_sentiment(symbol):

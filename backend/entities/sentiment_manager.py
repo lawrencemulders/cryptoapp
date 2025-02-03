@@ -1,6 +1,6 @@
-from app.entities.reddit_api import RedditAPI
-from app.entities.sentiment_analyzer import SentimentAnalyzer
-from app.entities.twitter_api import TwitterAPI
+from backend.entities.reddit_api import RedditAPI
+from backend.entities.sentiment_analyzer import SentimentAnalyzer
+from backend.entities.twitter_api import TwitterAPI
 
 
 class SentimentManager:

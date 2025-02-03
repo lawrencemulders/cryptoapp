@@ -12,7 +12,7 @@ ENV PYTHONPATH=/cryptoapp
 COPY docker/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy app directory into the container at /cryptoapp/app
+# Copy backend directory into the container at /cryptoapp/backend
 COPY app /cryptoapp/app
 
 # Copy docker directory into the container at /cryptoapp/docker
