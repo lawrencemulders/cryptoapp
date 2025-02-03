@@ -1,5 +1,5 @@
-from app.metrics.price_change_time import *
-from app.metrics.sentiment_analysis import *
+from backend.metrics.price_change_time import *
+from backend.metrics.sentiment_analysis import *
 import os
 
 

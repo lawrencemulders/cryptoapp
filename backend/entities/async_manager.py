@@ -7,7 +7,7 @@ import traceback
 
 def process_line(line, table):
     """Process each line from CSV (potentially a blocking operation)."""
-    from app.process_flows.table_composer import process_line
+    from backend.process_flows.table_composer import process_line
     print(f"Processing line: {line}")
     process_line(line, table)
 

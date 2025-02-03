@@ -1,15 +1,15 @@
-from app.other_crypto_usecases.market_overview import *
-from app.other_crypto_usecases.all_symbols_overview import *
-from app.other_crypto_usecases.symbol_overview import *
-from app.other_crypto_usecases.top_100_overview import *
-from app.other_crypto_usecases.os_alerting import *
-from app.process_flows.table_composer import *
+from backend.other_crypto_usecases.market_overview import *
+from backend.other_crypto_usecases.all_symbols_overview import *
+from backend.other_crypto_usecases.symbol_overview import *
+from backend.other_crypto_usecases.top_100_overview import *
+from backend.other_crypto_usecases.os_alerting import *
+from backend.process_flows.table_composer import *
 
 print()
 print("Welcome to cryptoapp")
 print()
 
-print("This app creates a periodic notification regarding asset movements and market metrics."
+print("This backend creates a periodic notification regarding asset movements and market metrics."
       "\nOther functionality includes deriving market summaries based on user input."
       "\nSelect the preferred option below.")
 

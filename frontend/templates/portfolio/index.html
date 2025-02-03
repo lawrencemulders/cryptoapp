@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Portfolio{% endblock %}</h1>
+  {% if g.user %}
+    <a class="action" href="{{ url_for('portfolio.create') }}">New</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  <table>
+    <thead>
+      <tr>
+        <th>Ticker</th>
+        <th>Quantity</th>
+        <th>Is Crypto</th>
+        <th>Author</th>
+        <th>Created On</th>
+        {% if g.user %}
+          <th>Actions</th>
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for post in posts %}
+        <tr>
+          <td>{{ post['ticker'] }}</td>
+          <td>{{ post['quantity'] }}</td>
+          <td>{{ 'Yes' if post['is_crypto'] else 'No' }}</td>
+          <td>{{ post['username'] }}</td>
+          <td>{{ post['created'].strftime('%Y-%m-%d') }}</td>
+          {% if g.user['id'] == post['author_id'] %}
+          <td>
+              <form action="{{ url_for('portfolio.update', id=post['id']) }}" method="get" style="display:inline;">
+                  <button type="submit" class="action">Edit</button>
+              </form>
+              <form action="{{ url_for('portfolio.delete', id=post['id']) }}" method="post" style="display:inline;">
+                  <button type="submit" class="danger" onclick="return confirm('Are you sure you want to delete this entry?');">
+                      Delete
+                  </button>
+              </form>
+          </td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
