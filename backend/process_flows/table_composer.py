@@ -1,76 +1,78 @@
 from backend.communication.send_email import *
 from backend.entities.async_manager import *
-from backend.entities.coinmarketcap_api import CryptoAPI
-from backend.entities.alphavantage_api import StockAPI
+from backend.entities.crypto_api import CryptoAPI
+from backend.entities.stock_api import StockAPI
 from backend.process_flows.metric_composer import *
 from prettytable import PrettyTable
-from dotenv import load_dotenv
+from collections import namedtuple
 import os
 
 
-def generate_email_flow():
-    load_dotenv()
-    csvfile = os.getenv("CSVFILE")
-    print("Successfully accessed csv")
+PortfolioAsset = namedtuple("PortfolioAsset", ["id", "author_id", "created", "symbol", "amount", "is_crypto"])
 
+
+async def generate_email_flow():
+    """Fetches portfolio, processes assets asynchronously, and sends an email."""
+
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    database_dir = os.path.join(project_root, 'database')
+    db_path = os.path.join(database_dir, 'crypto.db')
+
+    if not db_path:
+        raise ValueError("DB_URL is not set in the environment variables")
+
+    print("Successfully found database")
+
+    if db_path.startswith("sqlite:///"):
+        db_path = db_path.replace("sqlite:///", "")
+        if not os.path.isfile(db_path):
+            raise FileNotFoundError(f"Expected SQLite database {db_path} not found")
+
+    # Create table for displaying results
     table = PrettyTable(['Asset', 'Amount Owned', 'Value', 'Price', '1h', '24h', '7d', 'Sentiment'])
 
-    # Define the path for the CSV file
-    if os.path.isfile("/cryptoapp/`backend/" + csvfile):
-        csvfile_path = "/cryptoapp/backend/" + csvfile
-    elif os.path.isfile("backend/" + csvfile):
-        csvfile_path = "backend/" + csvfile
-    else:
-        csvfile_path = csvfile
+    # Initialize AsyncManager
+    manager = AsyncManager(db_path)
+    await manager.run(table)
 
-    # Check if the file exists
-    if not os.path.isfile(csvfile_path):
-        raise FileNotFoundError(f"CSV file not found at path: {csvfile_path}")
+    print("Processed all assets in table portfolio")
 
-    manager = AsyncManager()
-    with open(csvfile_path, "r", encoding='utf-8') as csv_file:
-        manager.run(csvfile_path, table)
-
-    print("Processed all lines in csv")
-
+    # Send email with results
     send_email(table)
 
 
-def process_line(line, table):
-    if has_at_least_two_non_empty_columns(line):
-        separate_columns = line[0].split(';')
-        if "\ufeff" in separate_columns[0]:
-            separate_columns[0] = separate_columns[0][1:].upper()
-        else:
-            separate_columns[0] = separate_columns[0].upper()
+def process_line(asset, table):
+    """
+    Process an asset retrieved from the database.
 
-        symbol = separate_columns[0]
-        amount = separate_columns[1]
+    asset: Named Tuple containing {id, author_id, created, symbol, amount, is_crypto}
+    table: PrettyTable containing data as-is to send to receiver
+    """
+    try:
+        asset = PortfolioAsset(*asset)
 
-        if separate_columns[2] == '1':
-            is_crypto = True
-        else:
-            is_crypto = False
+        symbol = asset.symbol.upper()
+        amount = asset.amount
+        is_crypto = asset.is_crypto  # Boolean flag (1 = True, 0 = False)
 
-        print(f"Successfully read column 1, column 2, and column 3: {symbol}, {amount}, {is_crypto}")
+        print(f"Processing asset: {symbol}, Amount: {amount}, Is Crypto: {is_crypto}")
 
+        # Fetch market data from the correct API
         if is_crypto:
-            # Perform Crypto api call
             crypto_api = CryptoAPI(api_key=os.getenv("APIKEYCRYPTO"))
             results = crypto_api.fetch_data(symbol)
         else:
-            # Perform Stock api call
             stock_api = StockAPI(api_key=os.getenv("APIKEYSTOCK"))
             results = stock_api.fetch_data(symbol)
 
+        # Process the fetched data
         table = metric_composer(table, results, symbol, amount, is_crypto)
-    else:
-        raise Exception("Failed to read column 1 and 2")
+
+        print(f"Successfully processed {symbol}")
+
+    except KeyError as e:
+        raise Exception(f"Missing expected database column: {e}")
+    except Exception as e:
+        raise Exception(f"Error processing asset {asset}: {e}")
 
     return table
-
-
-def has_at_least_two_non_empty_columns(row, delimiter=';'):
-    # Access the string in the list and split it into columns using the specified delimiter
-    columns = row[0].split(delimiter)
-    return len(columns) >= 2 and all(col.strip() != '' for col in columns)

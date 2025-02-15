@@ -4,6 +4,7 @@ from backend.other_crypto_usecases.symbol_overview import *
 from backend.other_crypto_usecases.top_100_overview import *
 from backend.other_crypto_usecases.os_alerting import *
 from backend.process_flows.table_composer import *
+import asyncio
 
 print()
 print("Welcome to cryptoapp")
@@ -25,7 +26,7 @@ print()
 choice = input("What is your choice (1-6)? ")
 
 if choice == '1':
-    generate_email_flow()
+    asyncio.run(generate_email_flow())
 if choice == '2':
     market_overview_crypto()
 if choice == '3':
