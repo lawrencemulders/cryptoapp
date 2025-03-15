@@ -4,7 +4,7 @@
 IMAGE_NAME="cryptoapp-image"
 CONTAINER_NAME="cryptoapp"
 DOCKERFILE_PATH="docker/Dockerfile"
-ENV_FILE="app/.env"
+ENV_FILE="backend/.env"
 
 # Navigate to the root directory
 cd "$(dirname "$0")"/..
