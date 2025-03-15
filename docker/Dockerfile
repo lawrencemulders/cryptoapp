@@ -13,10 +13,16 @@ COPY docker/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy backend directory into the container at /cryptoapp/backend
-COPY app /cryptoapp/app
+COPY backend /cryptoapp/backend
+
+# Copy frontend directory into the container at /cryptoapp/frontend
+COPY frontend /cryptoapp/frontend
+
+# Copy database directory into the container at /cryptoapp/database
+COPY database /cryptoapp/database
 
 # Copy docker directory into the container at /cryptoapp/docker
 COPY docker /cryptoapp/docker
 
 # Run the Python script
-CMD ["python", "app/process_flows/table_composer.py", "generate_email_flow"]
+CMD ["python", "backend/main.py"]
