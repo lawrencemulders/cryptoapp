@@ -36,7 +36,6 @@ jobs:
         source activate myenv
         conda install -y pip flake8 pytest
         pip install --no-deps -r docker/requirements.txt
-        pip install --no-binary :all: foil==0.2.5
 
     - name: Lint with flake8
       run: |
