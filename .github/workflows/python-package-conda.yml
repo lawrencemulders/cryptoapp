@@ -35,7 +35,7 @@ jobs:
         conda create -y -n myenv python=3.9
         source activate myenv
         conda install -y pip flake8 pytest
-        pip install --no-binary :all: foil
+        pip install foil==0.2.6
         pip install -r docker/requirements.txt
 
     - name: Lint with flake8
