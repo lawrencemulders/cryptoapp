@@ -35,10 +35,12 @@ jobs:
         conda create -y -n myenv python=3.9
         source $CONDA/etc/profile.d/conda.sh
         conda activate myenv
-        python --version
+        python --version  # Confirm Python 3.9
 
     - name: Install dependencies
       run: |
+        source $CONDA/etc/profile.d/conda.sh
+        conda activate myenv
         conda install -y pip flake8 pytest
         pip install --no-deps -r docker/requirements.txt
 
