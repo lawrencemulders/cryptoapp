@@ -44,4 +44,4 @@ class SentimentManager:
         print(f"Negative: {negative_percentage:.2f}%")
 
         # Return net sentiment score
-        return positive_percentage - negative_percentage
+        return (positive_percentage - negative_percentage) / 100

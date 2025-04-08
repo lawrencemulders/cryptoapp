@@ -39,6 +39,7 @@ async def generate_email_flow():
 
     # Send email with results
     send_email(table)
+    return table
 
 
 def process_line(asset, table):

@@ -8,7 +8,7 @@ from backend.db import get_db
 bp = Blueprint('portfolio', __name__)
 
 
-@bp.route('/')
+@bp.route('/portfolio')
 def index():
     db = get_db()
     posts = db.execute(
@@ -36,7 +36,7 @@ def get_portfolio(id, check_author=True):
     return portfolio
 
 
-@bp.route('/create', methods=('GET', 'POST'))
+@bp.route('/portfolio/create', methods=('GET', 'POST'))
 @login_required
 def create():
     if request.method == 'POST':
@@ -65,7 +65,7 @@ def create():
     return render_template('portfolio/create.html')
 
 
-@bp.route('/<int:id>/update', methods=('GET', 'POST'))
+@bp.route('/portfolio/<int:id>/update', methods=('GET', 'POST'))
 @login_required
 def update(id):
     post = get_portfolio(id)
@@ -96,7 +96,7 @@ def update(id):
     return render_template('portfolio/update.html', post=post)
 
 
-@bp.route('/<int:id>/delete', methods=('POST', 'DELETE'))
+@bp.route('/portfolio/<int:id>/delete', methods=('POST', 'DELETE'))
 @login_required
 def delete(id):
     get_portfolio(id)

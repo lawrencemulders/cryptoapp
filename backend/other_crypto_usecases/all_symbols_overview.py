@@ -22,10 +22,9 @@ def list_crypto():
     request = requests.get(global_url, headers=headers)
     results = request.json()
 
-# print(json.dumps(results, sort_keys=True, indent=4))
-
     data = results["data"]
-    # Loop through each cryptocurrency
+    result = ""
+
     for currency in data:
         name = currency['name']
         symbol = currency['symbol']
@@ -39,7 +38,7 @@ def list_crypto():
         market_cap = round(market_cap, 2)
 
         price_string = local_symbol + '{:,}'.format(price)
-        percent_change_24h_string = local_symbol + '{:,}'.format(percent_change_24h)
+        percent_change_24h_string = '%' + '{:,}'.format(percent_change_24h)
         market_cap_string = local_symbol + '{:,}'.format(market_cap)
 
         print(name + ' (' + symbol + ') ')
@@ -47,3 +46,10 @@ def list_crypto():
         print('24h Change: ' + percent_change_24h_string)
         print('Market Cap: ' + market_cap_string)
         print()
+
+        result += f"{name} ({symbol})\n"
+        result += f"Price: {price_string}\n"
+        result += f"24h Change: {percent_change_24h_string}\n"
+        result += f"Market Cap: {market_cap_string}\n\n"
+
+    return result

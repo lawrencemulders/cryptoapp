@@ -76,6 +76,11 @@ nav ul li a, nav ul li span, header .action {
   border: 1px solid #377ba8;
 }
 
+.header-title, .header-subtitle {
+  display: block;
+  margin-bottom: 10px;
+}
+
 .post > header {
   display: flex;
   align-items: flex-end;
@@ -122,6 +127,21 @@ nav ul li a, nav ul li span, header .action {
 .content textarea {
   min-height: 12em;
   resize: vertical;
+}
+
+.result-box {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  white-space: pre-wrap;
+  font-family: monospace;
+  border-radius: 8px;
+  min-height: 150px;
+}
+
+.options button {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 input.danger {

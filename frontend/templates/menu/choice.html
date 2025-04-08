@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Menu{% endblock %}
+
+{% block header %}
+  <h2>Welcome to cryptoapp</h2>
+{% endblock %}
+
+{% block content %}
+  <p style="text-align: left; font-size: 0.9rem; margin: 20px 0;">Search crypto</p>
+
+  <div class="options" style="margin-bottom: 1rem;">
+    <button onclick="fetchResult('1', this)">Generate Portfolio Email</button>
+    <button onclick="fetchResult('2', this)">Market Overview</button>
+    <button onclick="fetchResult('3', this)">List All Cryptocurrencies</button>
+    <button onclick="promptTicker()">Search Specific Cryptocurrency</button>
+    <button onclick="showFilterOptions()">Top 100 by Filter</button>
+  </div>
+
+  <div id="filter-form" style="margin-bottom: 1rem; display: none;">
+    <label for="filter">Choose a filter:</label>
+    <select id="filter" onchange="submitFilter()">
+      <option value="">-- Select --</option>
+      <option value="market_cap">Sort by Market Cap</option>
+      <option value="percent_change_24h">Sort by 24h % Change</option>
+      <option value="volume_24h">Sort by 24h Volume</option>
+    </select>
+  </div>
+
+  <p style="text-align: left; font-size: 0.9rem; margin: 20px 0;">View and edit your crypto and stocks</p>
+
+  <div class="options" style="margin-bottom: 1rem;">
+    <button onclick="fetchResult('6', this)">Manage your portfolio</button>
+  </div>
+
+  <div class="result-box" id="result">
+    <p><em>Results will appear here...</em></p>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    function fetchResult(option, extra = {}) {
+      const payload = { option, ...extra };
+
+      if (option !== '5') {
+        $('#filter-form').hide();
+      }
+
+      if (option === '6') {
+        window.location.href = "{{ url_for('portfolio.index') }}";
+        return;
+      }
+
+      $('#result').html('<p><em>Loading...</em></p>');
+      $('.options button').prop('disabled', true);
+
+      $.ajax({
+        url: "{{ url_for('menu.execute_option') }}",
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(payload),
+        success: function(response) {
+          $('#result').html('<pre>' + response.result + '</pre>');
+        },
+        error: function() {
+          $('#result').html('<p style="color:red;">Error retrieving result.</p>');
+        },
+        complete: function() {
+          $('.options button').prop('disabled', false);
+        }
+      });
+    }
+
+    function promptTicker() {
+      const ticker = prompt("Enter the crypto ticker (e.g. BTC):");
+      if (ticker) {
+        fetchResult('4', { ticker: ticker.toUpperCase() });
+      }
+    }
+
+    function showFilterOptions() {
+      $('#filter-form').show();
+    }
+
+    function submitFilter() {
+      const sort_by = $('#filter').val();
+      if (sort_by) {
+        fetchResult('5', { sort_by });
+      }
+    }
+  </script>
+{% endblock %}

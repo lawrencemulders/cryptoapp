@@ -1,55 +1,59 @@
 import requests
 import os
-from prettytable import PrettyTable
+import prettytable
 from colorama import Back, Style
 from dotenv import load_dotenv
 
 # Generate top 100 overview based on selected ranking.
 
 
-def top100_crypto():
+def top100_crypto(choice=None):
 
     global market_cap_string, volume_string
     local_currency = 'USD'
     local_symbol = '$'
+    valid_sorts = ['market_cap', 'percent_change_24h', 'volume_24h']
 
-    # Load environment variables from .env file
     load_dotenv()
-
     api_key = os.getenv("APIKEYCRYPTO")
     headers = {'X-CMC_PRO_API_KEY': api_key}
     base_url = 'https://pro-api.coinmarketcap.com'
 
-    print()
-    print("CoinMarketCap Explorer Menu")
-    print()
-    print("1 - Top 100 sorted by market cap")
-    print("2 - Top 100 sorted by 24h % change")
-    print("3 - Top 100 sorted by 24h volume")
-    print("0 - Exit")
-    print()
+    if not choice:
+        print()
+        print("CoinMarketCap Explorer Menu")
+        print("1 - Top 100 sorted by market cap")
+        print("2 - Top 100 sorted by 24h % change")
+        print("3 - Top 100 sorted by 24h volume")
+        print("0 - Exit")
+        print()
 
-    choice = input("What is your choice(1-3)? ")
+        numeric_choice = input("What is your choice (1-3)? ")
+        sort_map = {
+            '1': 'market_cap',
+            '2': 'percent_change_24h',
+            '3': 'volume_24h'
+        }
 
-    sort = ""
+        if numeric_choice == '0':
+            exit(0)
 
-    if choice == '1':
-        sort = 'market_cap'
-    if choice == '2':
-        sort = 'percent_change_24h'
-    if choice == '3':
-        sort = 'volume_24h'
-    if choice == '0':
-        exit(0)
+        choice = sort_map.get(numeric_choice)
+        if not choice:
+            return "Invalid choice. Please select 1, 2, or 3."
 
-    quote_url = base_url + '/v1/cryptocurrency/listings/latest?convert=' + local_currency + '&sort=' + sort
+    if choice not in valid_sorts:
+        return "Invalid choice. Please select market_cap, percent_change_24h, or volume_24h."
 
+    quote_url = f"{base_url}/v1/cryptocurrency/listings/latest?convert={local_currency}&sort={choice}"
     request = requests.get(quote_url, headers=headers)
     results = request.json()
 
-    data = results["data"]
+    if "data" not in results:
+        return f"API Error: {results.get('status', {}).get('error_message', 'Unknown error')}"
 
-    table = PrettyTable(['Asset', 'Price', 'Market Cap', 'Volume', '1h', '24h', '7d'])
+    data = results["data"]
+    table = prettytable.PrettyTable(['Asset', 'Price', 'Market Cap', 'Volume', '1h', '24h', '7d'])
 
     for currency in data:
         name = currency['name']
@@ -65,24 +69,12 @@ def top100_crypto():
 
         if hour_change is not None:
             hour_change = round(hour_change, 2)
-            if hour_change > 0:
-                hour_change = Back.GREEN + str(hour_change) + '%' + Style.RESET_ALL
-            else:
-                hour_change = Back.RED + str(hour_change) + '%' + Style.RESET_ALL
 
         if day_change is not None:
             day_change = round(day_change, 2)
-            if day_change > 0:
-                day_change = Back.GREEN + str(day_change) + '%' + Style.RESET_ALL
-            else:
-                day_change = Back.RED + str(day_change) + '%' + Style.RESET_ALL
 
         if week_change is not None:
             week_change = round(week_change, 2)
-            if week_change > 0:
-                week_change = Back.GREEN + str(week_change) + '%' + Style.RESET_ALL
-            else:
-                week_change = Back.RED + str(week_change) + '%' + Style.RESET_ALL
 
         if volume is not None:
             volume_string = '{:,}'.format(round(volume, 2))
@@ -95,6 +87,5 @@ def top100_crypto():
         table.add_row([name + ' (' + symbol + ')', local_symbol + price_string, local_symbol + market_cap_string,
                        local_symbol + volume_string, str(hour_change), str(day_change), str(week_change)])
 
-    print()
     print(table)
-    print()
+    return table
