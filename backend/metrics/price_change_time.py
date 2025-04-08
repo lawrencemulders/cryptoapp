@@ -59,15 +59,18 @@ class PercentageChangeMetrics:
     def add_row_to_table(self, name, symbol, amount, value, price, hour_change, day_change, week_change):
         value_string = self.format_value(value)
         price_string = self.format_value(price)
+        hour_string = self.format_value(hour_change)
+        day_string = self.format_value(day_change)
+        week_string = self.format_value(week_change)
 
         self.table.add_row([
             f"{name} ({symbol})",
             amount,
             f"{self.local_symbol}{value_string}",
             f"{self.local_symbol}{price_string}",
-            f"{hour_change}%",
-            f"{day_change}%",
-            f"{week_change}%",
+            f"{hour_string}%",
+            f"{day_string}%",
+            f"{week_string}%",
             0
         ])
 

@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 # Retrieve specified symbol.
 
 
-def single_search_crypto():
+def single_search_crypto(symbol=None):
 
     local_currency = 'USD'
     local_symbol = '$'
@@ -18,7 +18,10 @@ def single_search_crypto():
     headers = {'X-CMC_PRO_API_KEY': api_key}
     base_url = 'https://pro-api.coinmarketcap.com'
 
-    symbol = input("Enter the ticker symbol of a cryptocurrency: ")
+    if not symbol:
+        symbol = input("Enter the ticker symbol of a cryptocurrency: ")
+
+    symbol = symbol.upper()
 
     global_url = base_url + '/v1/cryptocurrency/quotes/latest?convert=' + local_currency + '&symbol=' + symbol
 
@@ -43,8 +46,12 @@ def single_search_crypto():
     percent_change_24h_string = local_symbol + '{:,}'.format(percent_change_24h)
     market_cap_string = local_symbol + '{:,}'.format(market_cap)
 
-    print(name + ' (' + symbol + ') ')
-    print('Price: ' + price_string)
-    print('24h Change: ' + percent_change_24h_string)
-    print('Market Cap: ' + market_cap_string)
-    print()
+    result = ""
+
+    result += f"{name} ({symbol})\n"
+    result += f"Price: {price_string}\n"
+    result += f"24h Change: {percent_change_24h_string}\n"
+    result += f"Market Cap: {market_cap_string}\n\n"
+
+    print(result)
+    return result

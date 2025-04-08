@@ -35,9 +35,11 @@ def create_app(test_config=None):
     from backend import db
     from . import portfolio
     from . import auth
+    from . import menu
 
     db.init_app(app)
     app.register_blueprint(portfolio.bp)
     app.register_blueprint(auth.bp)
+    app.register_blueprint(menu.bp)
 
     return app

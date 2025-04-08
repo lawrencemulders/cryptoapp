@@ -37,11 +37,12 @@ def market_overview_crypto():
     total_market_cap_string = local_symbol + '{:,}'.format(total_market_cap)
     total_volume_24h_string = local_symbol + '{:,}'.format(total_volume_24h)
 
-    print()
-    print(
-        'The global market cap for all cryptocurrencies is ' + total_market_cap_string +
-        ' and the global 24h volume is ' + total_volume_24h_string + '.')
-    print()
-    print('Bitcoin makes up ' + str(btc_dominance) + '% of the global market cap and Ethereum makes up ' + str(
-        eth_dominance) + '%.')
-    print()
+    result = (
+        f"The global market cap for all cryptocurrencies is {total_market_cap_string} <br>"
+        f"and the global 24h volume is {total_volume_24h_string}.<br><br>"
+        f"Bitcoin makes up {btc_dominance}% of the global market cap.<br><br>"
+        f"Ethereum makes up {eth_dominance}%."
+    )
+
+    print(result)
+    return result

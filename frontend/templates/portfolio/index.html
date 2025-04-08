@@ -3,7 +3,8 @@
 {% block header %}
   <h1>{% block title %}Portfolio{% endblock %}</h1>
   {% if g.user %}
-    <a class="action" href="{{ url_for('portfolio.create') }}">New</a>
+    <a class="action" href="{{ url_for('portfolio.create') }}">New crypto/stock</a>
+    <a class="action" href="{{ url_for('menu.select_option') }}">Return to menu</a>
   {% endif %}
 {% endblock %}
 
