@@ -21,7 +21,6 @@ def select_option():
 def execute_option():
     data = request.json
     option = data.get('option')
-    result = ""
 
     try:
         if option == '1':

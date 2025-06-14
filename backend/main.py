@@ -4,6 +4,7 @@ from backend.other_crypto_usecases.symbol_overview import *
 from backend.other_crypto_usecases.top_100_overview import *
 from backend.other_crypto_usecases.os_alerting import *
 from backend.process_flows.table_composer import *
+from backend.db import *
 import asyncio
 
 
@@ -19,6 +20,7 @@ async def main():
         print("4 - Search a Specific Cryptocurrency")
         print("5 - Top 100 Cryptocurrency Per Filter")
         print("6 - Alert Tracking of Your Cryptocurrencies")
+        print("7 - Create postgresql database")
         print("0 - Exit")
 
         choice = input("What is your choice (1-6)? ")

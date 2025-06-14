@@ -2,20 +2,19 @@ from flask import Flask
 import logging
 import sys
 import os
+from dotenv import load_dotenv
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'backend')))
 
 
 def create_app(test_config=None):
-    database_dir = os.path.join(os.path.dirname(__file__), '..', 'database')
-    print(f"Database directory: {database_dir}")
-    os.makedirs(database_dir, exist_ok=True)
-    db_path = os.path.join(database_dir, 'crypto.db')
+
+    load_dotenv()
 
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE=db_path,
+        DB_URL=os.getenv("DB_URL"),
     )
 
     if test_config:
