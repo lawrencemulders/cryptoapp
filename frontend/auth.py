@@ -4,6 +4,8 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 from backend.db import get_db
+from psycopg2 import IntegrityError
+import psycopg2.extras
 
 bp = Blueprint('auth', __name__)
 
@@ -13,7 +15,7 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        db = get_db()
+        conn = get_db()
         error = None
 
         if not username:
@@ -23,14 +25,17 @@ def register():
 
         if error is None:
             try:
-                db.execute(
-                    "INSERT INTO user (username, password) VALUES (?, ?)",
-                    (username, generate_password_hash(password)),
-                )
-                db.commit()
-            except db.IntegrityError:
+                with conn.cursor() as cur:
+                    cur.execute(
+                        'INSERT INTO "user" (username, password) VALUES (%s, %s)',
+                        (username, generate_password_hash(password)),
+                    )
+                    conn.commit()
+            except IntegrityError:
+                conn.rollback()
                 error = f"User {username} is already registered."
-            else:
+
+            if error is None:
                 return redirect(url_for("auth.login"))
 
         flash(error)
@@ -43,11 +48,14 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        db = get_db()
+        conn = get_db()
         error = None
-        user = db.execute(
-            'SELECT * FROM user WHERE username = ?', (username,)
-        ).fetchone()
+
+        with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+            cur.execute(
+                'SELECT * FROM "user" WHERE username = %s', (username,)
+            )
+            user = cur.fetchone()
 
         if user is None:
             error = 'Incorrect username.'
@@ -71,9 +79,10 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = get_db().execute(
-            'SELECT * FROM user WHERE id = ?', (user_id,)
-        ).fetchone()
+        conn = get_db()
+        with conn.cursor(cursor_factory=psycopg2.extras.DictCursor) as cur:
+            cur.execute('SELECT * FROM "user" WHERE id = %s', (user_id,))
+            g.user = cur.fetchone()
 
 
 @bp.route('/logout')
