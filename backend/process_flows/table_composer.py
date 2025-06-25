@@ -8,7 +8,7 @@ from collections import namedtuple
 import os
 
 
-PortfolioAsset = namedtuple("PortfolioAsset", ["id", "author_id", "created", "symbol", "amount", "is_crypto"])
+PortfolioAsset = namedtuple("PortfolioAsset", ["id", "author_id", "created", "ticker", "quantity", "is_crypto"])
 
 
 async def generate_email_flow():
@@ -50,11 +50,18 @@ def process_line(asset, table):
     table: PrettyTable containing data as-is to send to receiver
     """
     try:
-        asset = PortfolioAsset(*asset)
+        asset = PortfolioAsset(
+            id=asset["id"],
+            author_id=asset["author_id"],
+            created=asset["created"],
+            ticker=asset["ticker"],
+            quantity=asset["quantity"],
+            is_crypto=asset["is_crypto"]
+        )
 
-        symbol = asset.symbol.upper()
-        amount = asset.amount
-        is_crypto = asset.is_crypto  # Boolean flag (1 = True, 0 = False)
+        symbol = asset.ticker.upper()
+        amount = asset.quantity
+        is_crypto = asset.is_crypto
 
         print(f"Processing asset: {symbol}, Amount: {amount}, Is Crypto: {is_crypto}")
 

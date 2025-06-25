@@ -1,8 +1,8 @@
 from backend.db import *
 
 
-async def get_portfolio():
-    return await query_all(
+def get_portfolio():
+    return query_all(
         "SELECT * FROM portfolio ORDER BY 1 ASC"
     )
 
