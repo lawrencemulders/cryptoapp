@@ -23,7 +23,7 @@ async def main():
         print("7 - Create postgresql database")
         print("0 - Exit")
 
-        choice = input("What is your choice (1-6)? ")
+        choice = input("What is your choice (1-7)? ")
 
         if choice == '1':
             await generate_email_flow()  # Correctly await the async function
@@ -37,6 +37,8 @@ async def main():
             top100_crypto()  # Synchronous function, no need for await
         elif choice == '6':
             alert_tracking_crypto()  # Synchronous function, no need for await
+        elif choice == '7':
+            init_db()  # Initialize database
         elif choice == '0':
             print("Exiting...")
             break

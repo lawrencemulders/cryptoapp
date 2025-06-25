@@ -16,7 +16,7 @@ class AsyncManager:
         loop = asyncio.get_running_loop()
         tasks = []
 
-        portfolio = await get_portfolio()
+        portfolio = get_portfolio()
 
         for asset in portfolio:
             try:
