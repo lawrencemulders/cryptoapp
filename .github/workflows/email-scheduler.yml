@@ -40,8 +40,6 @@ jobs:
           cd foil
 
           # Patch setup.py or wheel metadata to fix invalid wheel filename tags
-          # For demonstration, we do a simple sed to replace comma+space with dot
-          # You might need to adjust depending on exact source
           sed -i 's/py36, py35/py36.py35/g' setup.py || echo "No setup.py patch needed"
 
           # Install foil from local source without building wheel
