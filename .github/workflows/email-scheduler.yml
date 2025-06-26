@@ -2,7 +2,7 @@ name: Daily Email Sender
 
 on:
   schedule:
-    - cron: '0 11 * * *'  # Daily at 11:00 UTC
+    - cron: '0 11 * * *'  # Daily at 11:00 UTC (1 PM CEST / 12 PM CET)
   workflow_dispatch:
 
 jobs:
@@ -13,12 +13,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('backend/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
-          cache: 'pip'
-          cache-dependency-path: backend/requirements.txt
 
       - name: Install dependencies
         working-directory: backend
@@ -42,4 +48,4 @@ jobs:
           CSRFSECRETKEY: ${{ secrets.CSRFSECRETKEY }}
           PERCENTAGECHANGETIME: ${{ secrets.PERCENTAGECHANGETIME }}
           SENTIMENTANALYSIS: ${{ secrets.SENTIMENTANALYSIS }}
-        run: python run_generate_email.py
+        run: python
