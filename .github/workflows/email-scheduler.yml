@@ -27,13 +27,12 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies
-        working-directory: backend
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r backend/requirements.txt
 
       - name: Run generate_email_flow
-        working-directory: backend
+        run: python .github/workflows/run_generate_email.py
         env:
           DB_URL: ${{ secrets.DB_URL }}
           RECIPIENTEMAIL: ${{ secrets.RECIPIENTEMAIL }}
@@ -48,4 +47,3 @@ jobs:
           CSRFSECRETKEY: ${{ secrets.CSRFSECRETKEY }}
           PERCENTAGECHANGETIME: ${{ secrets.PERCENTAGECHANGETIME }}
           SENTIMENTANALYSIS: ${{ secrets.SENTIMENTANALYSIS }}
-        run: python
