@@ -35,6 +35,9 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r docker/requirements.txt
 
+      - name: Install foil with PEP 517
+        run: pip install foil --use-pep517
+
       - name: Run generate_email_flow
         run: python .github/workflows/run_generate_email.py
         env:
