@@ -35,7 +35,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install -r docker/requirements.txt || true
-          pip install python-dotenv click pydapper psycopg2-binary
+          pip install python-dotenv click pydapper psycopg2-binary flask
 
       - name: Run generate_email script
         env:
