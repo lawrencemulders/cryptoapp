@@ -35,6 +35,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install -r docker/requirements.txt || true
+          pip install python-dotenv
 
       - name: Run generate_email script
         env:
