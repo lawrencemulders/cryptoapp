@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 from backend.other_crypto_usecases.market_overview import *
 from backend.other_crypto_usecases.all_symbols_overview import *
 from backend.other_crypto_usecases.symbol_overview import *
