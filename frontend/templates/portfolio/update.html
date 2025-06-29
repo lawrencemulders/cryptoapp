@@ -10,7 +10,7 @@
     <input type="text" name="ticker" id="ticker" value="{{ post['ticker'] }}" required>
 
     <label for="quantity">Quantity</label>
-    <input type="number" name="quantity" id="quantity" value="{{ post['quantity'] }}" required>
+    <input type="number" name="quantity" id="quantity" step="any" min="0.0000001" value="{{ post['quantity'] }}" required>
 
     <label for="is_crypto">Is Crypto?</label>
     <input type="checkbox" name="is_crypto" id="is_crypto" {{ 'checked' if post['is_crypto'] else '' }} />

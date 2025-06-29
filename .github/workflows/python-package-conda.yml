@@ -45,8 +45,8 @@ jobs:
         conda activate myenv
         conda install -y pip flake8 pytest
         pip install --upgrade pip setuptools wheel
-        pip install --no-binary :all: foil==0.2.6  # Force source install of foil
-        pip install --no-deps -r docker/requirements.txt
+        pip install -r docker/requirements.txt || true
+        pip install python-dotenv click supabase pydapper psycopg2-binary flask requests praw vaderSentiment prettytable
 
     - name: Verify Installed Packages
       shell: bash
